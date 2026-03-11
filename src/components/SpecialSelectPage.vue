@@ -1,19 +1,19 @@
 <template>
   <div class="min-h-dvh flex flex-col items-center px-5 py-12">
-    <div class="w-full max-w-lg">
+    <div class="w-full max-w-lg lg:max-w-xl">
 
       <!-- Back button -->
       <button @click="$emit('back')"
-              class="mb-8 text-xs text-white/30 hover:text-white/60 transition-colors cursor-pointer animate-float-in">
+              class="mb-8 text-xs lg:text-sm text-white/30 hover:text-white/60 transition-colors cursor-pointer animate-float-in">
         &larr; {{ t('special.back') }}
       </button>
 
       <!-- Header -->
       <div class="text-center mb-10 animate-float-in">
-        <h1 class="text-3xl md:text-4xl font-black mb-3">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-black mb-3">
           <span class="gradient-text">{{ t('special.title') }}</span>
         </h1>
-        <p class="text-sm text-white/35 leading-relaxed max-w-xs mx-auto">
+        <p class="text-sm lg:text-base text-white/35 leading-relaxed max-w-xs lg:max-w-sm mx-auto">
           {{ t('special.subtitle') }}
         </p>
       </div>
@@ -24,7 +24,7 @@
           v-for="(spec, idx) in specializations"
           :key="spec.id"
           @click="$emit('select', spec.id)"
-          class="w-full p-5 rounded-2xl text-left glass-card
+          class="w-full p-5 lg:p-6 rounded-2xl text-left glass-card
                  hover:border-opacity-40 transition-all duration-300
                  cursor-pointer active:scale-[0.98] group"
           :class="'animate-float-in-' + Math.min(idx + 1, 5)"
@@ -40,14 +40,14 @@
               </div>
             </div>
             <div class="flex-1 min-w-0">
-              <div class="font-bold text-sm text-white/80 group-hover:text-white/95 transition-colors">
+              <div class="font-bold text-sm lg:text-base text-white/80 group-hover:text-white/95 transition-colors">
                 {{ spec.name[locale] }}
               </div>
-              <div class="text-[11px] text-white/25 mt-0.5">
+              <div class="text-[11px] lg:text-xs text-white/25 mt-0.5">
                 {{ spec.subtitle[locale] }}
               </div>
             </div>
-            <div class="text-white/15 group-hover:text-white/40 transition-colors text-sm">
+            <div class="text-white/15 group-hover:text-white/40 transition-colors text-sm lg:text-base">
               &rarr;
             </div>
           </div>
@@ -55,7 +55,7 @@
           <!-- Model tiers preview -->
           <div class="flex gap-1.5 mt-3 ml-16">
             <span v-for="model in spec.models" :key="model.name"
-                  class="text-[9px] px-1.5 py-0.5 rounded bg-white/[0.03] text-white/20">
+                  class="text-[9px] lg:text-[11px] px-1.5 py-0.5 lg:px-2 lg:py-1 rounded bg-white/[0.03] text-white/20">
               {{ model.emoji }} {{ model.name }}
             </span>
           </div>

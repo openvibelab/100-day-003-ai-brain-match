@@ -1,5 +1,5 @@
 <template>
-  <svg :viewBox="`0 0 ${size} ${size}`" class="w-full max-w-[240px] mx-auto select-none">
+  <svg :viewBox="`0 0 ${size} ${size}`" class="w-full max-w-[240px] lg:max-w-[320px] mx-auto select-none">
     <defs>
       <radialGradient :id="'radar-fill-' + accentColor.replace('#','')">
         <stop offset="0%" :stop-color="accentColor" stop-opacity="0.2" />

@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-dvh flex flex-col items-center justify-center px-5 py-16">
-    <div class="text-center max-w-sm w-full">
+    <div class="text-center max-w-sm lg:max-w-md w-full">
 
       <!-- Brain icon with animated glow ring -->
       <div class="relative inline-flex items-center justify-center mb-10 animate-float-in">
@@ -10,15 +10,15 @@
       </div>
 
       <!-- Title -->
-      <h1 class="text-[2.5rem] md:text-5xl font-black leading-tight mb-3 animate-float-in-1">
+      <h1 class="text-[2.5rem] md:text-5xl lg:text-6xl font-black leading-tight mb-3 animate-float-in-1">
         <span class="gradient-text">{{ t('app.title') }}</span>
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-base md:text-lg text-white/50 mb-2 animate-float-in-2">
+      <p class="text-base md:text-lg lg:text-xl text-white/50 mb-2 animate-float-in-2">
         {{ t('app.subtitle') }}
       </p>
-      <p class="text-xs text-white/25 mb-10 leading-relaxed max-w-xs mx-auto animate-float-in-2">
+      <p class="text-xs lg:text-sm text-white/25 mb-10 leading-relaxed max-w-xs lg:max-w-sm mx-auto animate-float-in-2">
         {{ t('app.description') }}
       </p>
 
@@ -28,14 +28,14 @@
           <span
             v-for="model in aiModels"
             :key="model.id"
-            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full
-                   text-[10px] font-semibold tracking-wide
+            class="inline-flex items-center gap-1 px-2.5 py-1 lg:px-3 lg:py-1.5 rounded-full
+                   text-[10px] lg:text-xs font-semibold tracking-wide
                    transition-all duration-500 hover:scale-110 cursor-default
                    border"
             :style="{
               borderColor: model.color + '25',
               color: model.color + 'cc',
-              background: model.color + '08'
+              background: model.color + '08',
             }"
           >
             <span>{{ model.emoji }}</span>
@@ -58,7 +58,7 @@
       <div class="animate-float-in-4">
         <button
           @click="$emit('start')"
-          class="shimmer-btn relative px-14 py-4 rounded-2xl font-bold text-base
+          class="shimmer-btn relative px-14 py-4 lg:px-16 lg:py-5 rounded-2xl font-bold text-base lg:text-lg
                  bg-gradient-to-r from-neon-cyan/12 via-neon-purple/12 to-neon-pink/12
                  border border-neon-cyan/25 hover:border-neon-cyan/60
                  transition-all duration-500 cursor-pointer
@@ -67,7 +67,7 @@
         >
           <span class="relative z-10 text-white tracking-wide">{{ t('app.start') }}</span>
         </button>
-        <p class="text-[11px] text-white/20 mt-4 tracking-wider">{{ t('app.startSub') }}</p>
+        <p class="text-[11px] lg:text-xs text-white/20 mt-4 tracking-wider">{{ t('app.startSub') }}</p>
       </div>
 
       <!-- Deep Dive entry — prominent, with specialty icons -->
@@ -80,7 +80,7 @@
                  transition-all duration-300 cursor-pointer active:scale-[0.98]
                  group"
         >
-          <div class="text-sm font-bold text-white/70 group-hover:text-white/90 mb-2">
+          <div class="text-sm lg:text-base font-bold text-white/70 group-hover:text-white/90 mb-2">
             🧩 {{ t('special.deepDive') }}
           </div>
           <div class="flex justify-center gap-2 mb-2">
@@ -98,13 +98,13 @@
       </div>
 
       <!-- Attempt counter -->
-      <p v-if="attempt > 0" class="text-[11px] text-white/15 mt-4">
+      <p v-if="attempt > 0" class="text-[11px] lg:text-xs text-white/15 mt-4">
         {{ t('result.attempt') }} #{{ attempt + 1 }}
       </p>
     </div>
 
     <!-- Footer -->
-    <div class="mt-auto pt-16 text-center text-[11px] text-white/15 tracking-wider">
+    <div class="mt-auto pt-16 text-center text-[11px] lg:text-xs text-white/15 tracking-wider">
       {{ t('footer.day') }}
       <span class="mx-1.5 text-white/10">/</span>
       <a href="https://github.com/openvibelab" target="_blank"

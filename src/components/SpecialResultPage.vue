@@ -1,11 +1,11 @@
 <template>
   <div class="min-h-dvh flex flex-col items-center px-5 py-12">
-    <div class="w-full max-w-lg">
+    <div class="w-full max-w-lg lg:max-w-xl">
 
       <!-- ===== HERO: Matched model ===== -->
       <div class="text-center mb-12 animate-float-in">
         <!-- Specialty badge -->
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold mb-5"
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 lg:px-4 lg:py-1.5 rounded-full text-[10px] lg:text-xs font-semibold mb-5"
              :style="{ background: spec.color + '10', color: spec.color + 'cc', border: '1px solid ' + spec.color + '20' }">
           {{ spec.icon }} {{ spec.name[locale] }}
         </div>
@@ -14,22 +14,22 @@
         <div class="relative inline-flex items-center justify-center mb-5">
           <div class="absolute w-24 h-24 rounded-full blur-3xl opacity-25"
                :style="{ background: spec.color }" />
-          <span class="relative text-7xl select-none">{{ matchedModel.emoji }}</span>
+          <span class="relative text-7xl lg:text-8xl select-none">{{ matchedModel.emoji }}</span>
         </div>
 
-        <p class="text-sm text-white/40 mb-3">
+        <p class="text-sm lg:text-base text-white/40 mb-3">
           {{ matchedModel.reaction[locale] }}
         </p>
-        <h1 class="text-4xl md:text-5xl font-black mb-4 leading-tight"
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight"
             :style="{ color: spec.color }">
           {{ matchedModel.name }}
         </h1>
       </div>
 
       <!-- ===== SCORE CARD ===== -->
-      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-1">
+      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-1">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] uppercase tracking-[0.15em] text-white/25">{{ t('result.score') }}</span>
+          <span class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-white/25">{{ t('result.score') }}</span>
           <span class="text-[10px] px-2.5 py-1 rounded-full font-semibold"
                 :style="{ background: spec.color + '10', color: spec.color + '90' }">
             {{ spec.name[locale] }}
@@ -38,11 +38,11 @@
 
         <!-- Big score -->
         <div class="text-center py-6">
-          <span class="text-7xl font-black tabular-nums animate-score"
+          <span class="text-7xl lg:text-8xl font-black tabular-nums animate-score"
                 :style="{ color: spec.color }">
             {{ animatedScore }}
           </span>
-          <span class="text-lg text-white/15 ml-0.5">/100</span>
+          <span class="text-lg lg:text-xl text-white/15 ml-0.5">/100</span>
         </div>
 
         <!-- Progress bar -->
@@ -74,19 +74,19 @@
         </div>
 
         <!-- Stats -->
-        <div class="flex justify-center gap-5 text-[11px] text-white/25">
+        <div class="flex justify-center gap-5 text-[11px] lg:text-xs text-white/25">
           <span class="tabular-nums">{{ correctCount }}/{{ answers.length }} {{ t('result.correct') }}</span>
         </div>
       </div>
 
       <!-- ===== DIFFICULTY BREAKDOWN ===== -->
-      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-2">
-        <h3 class="text-[10px] uppercase tracking-[0.15em] text-white/25 mb-5 text-center">
+      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-2">
+        <h3 class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-white/25 mb-5 text-center">
           {{ t('special.diffBreakdown') }}
         </h3>
         <div class="space-y-2.5">
           <div v-for="d in difficultyBreakdown" :key="d.level" class="flex items-center gap-2.5">
-            <span class="text-[10px] text-white/25 w-20 shrink-0 truncate">
+            <span class="text-[10px] lg:text-xs text-white/25 w-20 shrink-0 truncate">
               {{ d.label }}
             </span>
             <div class="flex-1 h-[5px] rounded-full bg-white/[0.04] overflow-hidden">
@@ -101,25 +101,25 @@
       </div>
 
       <!-- ===== DEPTH INSIGHT ===== -->
-      <div class="glass-card rounded-2xl p-5 mb-4 animate-float-in-3">
+      <div class="glass-card rounded-2xl p-5 lg:p-7 mb-4 animate-float-in-3">
         <div class="flex items-start gap-3">
-          <span class="text-xl shrink-0 mt-0.5">{{ insightEmoji }}</span>
+          <span class="text-xl lg:text-2xl shrink-0 mt-0.5">{{ insightEmoji }}</span>
           <div>
-            <div class="text-xs font-bold text-white/60 mb-1">{{ locale === 'zh' ? '深度洞察' : 'Depth Insight' }}</div>
-            <p class="text-[11px] text-white/35 leading-relaxed">{{ insightText }}</p>
+            <div class="text-xs lg:text-sm font-bold text-white/60 mb-1">{{ locale === 'zh' ? '深度洞察' : 'Depth Insight' }}</div>
+            <p class="text-[11px] lg:text-xs text-white/35 leading-relaxed">{{ insightText }}</p>
           </div>
         </div>
       </div>
 
       <!-- ===== SHARE ===== -->
-      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-4">
-        <p class="text-xs text-white/30 text-center mb-4">
+      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-4">
+        <p class="text-xs lg:text-sm text-white/30 text-center mb-4">
           {{ locale === 'zh'
             ? `${spec.name.zh}专项我是${matchedModel.name}级，不服来战！`
             : `I'm ${matchedModel.name} level in ${spec.name.en}. Beat that!` }}
         </p>
         <button @click="shareResult"
-                class="w-full px-4 py-3.5 rounded-xl text-xs font-semibold
+                class="w-full px-4 py-3.5 lg:py-4 rounded-xl text-xs lg:text-sm font-semibold
                        bg-white/[0.03] border border-white/[0.06]
                        hover:border-white/15 hover:bg-white/[0.04]
                        transition-all duration-300 cursor-pointer active:scale-[0.97]
@@ -136,20 +136,20 @@
       <!-- ===== ACTIONS ===== -->
       <div class="space-y-2.5 mb-8 animate-float-in-4">
         <button @click="$emit('retrySpecial')"
-                class="w-full px-5 py-4 rounded-xl text-sm text-center
+                class="w-full px-5 py-4 lg:py-5 rounded-xl text-sm lg:text-base text-center
                        glass-card hover:border-neon-cyan/20
                        transition-all duration-300 cursor-pointer active:scale-[0.98]">
           <span class="text-white/70 font-semibold">🎲 {{ t('special.retry') }}</span>
           <span class="block text-[10px] text-white/20 mt-1">{{ t('special.retryHint') }}</span>
         </button>
         <button @click="$emit('pickOther')"
-                class="w-full px-5 py-3.5 rounded-xl text-sm text-center
+                class="w-full px-5 py-3.5 lg:py-4 rounded-xl text-sm lg:text-base text-center
                        glass-card hover:border-neon-purple/20
                        transition-all duration-300 cursor-pointer active:scale-[0.98]">
           <span class="text-neon-purple/60 font-semibold">🧩 {{ t('special.pickOther') }}</span>
         </button>
         <button @click="$emit('backToMain')"
-                class="w-full px-5 py-3 rounded-xl text-xs text-center
+                class="w-full px-5 py-3 lg:py-3.5 rounded-xl text-xs lg:text-sm text-center
                        text-white/25 hover:text-white/50
                        transition-all duration-300 cursor-pointer">
           &larr; {{ t('special.backToMain') }}

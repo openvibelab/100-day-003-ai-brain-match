@@ -2,18 +2,18 @@
   <div class="min-h-dvh flex flex-col items-center justify-center px-5 py-8">
 
     <!-- Top bar -->
-    <div class="w-full max-w-xl mb-8">
+    <div class="w-full max-w-xl lg:max-w-2xl mb-8">
       <div class="flex justify-between items-center mb-3">
         <!-- Left: quit + question counter -->
         <div class="flex items-center gap-3">
           <button @click="confirmQuit"
-                  class="w-7 h-7 rounded-lg flex items-center justify-center
+                  class="w-7 h-7 lg:w-8 lg:h-8 rounded-lg flex items-center justify-center
                          text-white/20 hover:text-white/50 hover:bg-white/[0.04]
-                         transition-all cursor-pointer text-sm"
+                         transition-all cursor-pointer text-sm lg:text-base"
                   aria-label="Quit quiz">
             &times;
           </button>
-          <span class="text-white/30 text-sm font-mono tabular-nums">
+          <span class="text-white/30 text-sm lg:text-base font-mono tabular-nums">
             {{ String(current + 1).padStart(2, '0') }}
             <span class="text-white/10">/</span>
             {{ String(questions.length).padStart(2, '0') }}
@@ -40,7 +40,7 @@
                 : 'bg-white/8'"
             />
           </span>
-          <span class="px-2.5 py-[3px] rounded-md text-[10px] font-semibold tracking-wide"
+          <span class="px-2.5 py-[3px] lg:px-3 lg:py-1 rounded-md text-[10px] lg:text-xs font-semibold tracking-wide"
                 :style="{ background: catColor + '10', color: catColor }">
             {{ t('cat.' + questions[current].category) }}
           </span>
@@ -59,7 +59,7 @@
       </div>
 
       <!-- Mini score -->
-      <div class="flex justify-between items-center mt-2 text-[10px] text-white/20">
+      <div class="flex justify-between items-center mt-2 text-[10px] lg:text-xs text-white/20">
         <span>{{ correctCount }}/{{ current + (answered !== null ? 1 : 0) }} {{ locale === 'zh' ? '答对' : 'correct' }}</span>
         <span class="flex gap-[2px]">
           <span v-for="(a, i) in miniDots" :key="i"
@@ -89,10 +89,10 @@
     <!-- Question card -->
     <Transition name="card" mode="out-in">
       <div :key="current"
-           class="w-full max-w-xl glass-card rounded-2xl p-7 md:p-9"
+           class="w-full max-w-xl lg:max-w-2xl glass-card rounded-2xl p-7 md:p-9 lg:p-11"
            :class="flashClass">
 
-        <h2 class="text-lg md:text-xl font-bold mb-8 leading-[1.7] text-white/85">
+        <h2 class="text-lg md:text-xl lg:text-2xl font-bold mb-8 leading-[1.7] text-white/85">
           {{ questions[current].text[locale] }}
         </h2>
 
@@ -102,7 +102,7 @@
             :key="idx"
             @click="selectAnswer(idx)"
             :disabled="answered !== null"
-            class="option-btn w-full text-left px-4 py-3.5 rounded-xl border
+            class="option-btn w-full text-left px-4 py-3.5 lg:px-5 lg:py-4 rounded-xl border
                    transition-all duration-300 cursor-pointer
                    disabled:cursor-default group"
             :class="getOptionClass(idx)"
@@ -113,7 +113,7 @@
                     :class="getCircleClass(idx)">
                 {{ ['A','B','C','D'][idx] }}
               </span>
-              <span class="text-sm leading-relaxed">{{ option }}</span>
+              <span class="text-sm lg:text-base leading-relaxed">{{ option }}</span>
             </span>
           </button>
         </div>
@@ -126,7 +126,7 @@
         <button
           v-if="answered !== null"
           @click="nextQuestion"
-          class="px-10 py-2.5 rounded-xl font-semibold text-sm
+          class="px-10 py-2.5 lg:px-12 lg:py-3 rounded-xl font-semibold text-sm lg:text-base
                  border transition-all duration-300 cursor-pointer
                  active:scale-95"
           :class="current < questions.length - 1

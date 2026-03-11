@@ -5,7 +5,8 @@
   <div class="bg-orb bg-orb-2" />
   <div class="bg-orb bg-orb-3" />
 
-  <div class="relative z-10">
+  <Analytics />
+  <div class="relative z-10 max-w-3xl mx-auto">
     <LangToggle />
 
     <Transition name="page" mode="out-in">
@@ -62,6 +63,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { Analytics } from '@vercel/analytics/vue'
 import LangToggle from './components/LangToggle.vue'
 import StartPage from './components/StartPage.vue'
 import QuizPage from './components/QuizPage.vue'
