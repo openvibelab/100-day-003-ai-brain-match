@@ -1,9 +1,9 @@
 <template>
   <svg :viewBox="`0 0 ${size} ${size}`" class="w-full max-w-[240px] mx-auto select-none">
     <defs>
-      <radialGradient id="radar-fill">
-        <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.2" />
-        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.03" />
+      <radialGradient :id="'radar-fill-' + accentColor.replace('#','')">
+        <stop offset="0%" :stop-color="accentColor" stop-opacity="0.2" />
+        <stop offset="100%" :stop-color="accentColor" stop-opacity="0.03" />
       </radialGradient>
       <filter id="glow">
         <feGaussianBlur stdDeviation="2" result="blur" />
@@ -32,16 +32,16 @@
     />
 
     <!-- Data polygon -->
-    <polygon :points="dataPoints" fill="url(#radar-fill)" />
-    <polygon :points="dataPoints" fill="none" stroke="#00f0ff" stroke-width="1.5"
+    <polygon :points="dataPoints" :fill="`url(#radar-fill-${accentColor.replace('#','')})`" />
+    <polygon :points="dataPoints" fill="none" :stroke="accentColor" stroke-width="1.5"
              stroke-linejoin="round" filter="url(#glow)" opacity="0.8" />
 
     <!-- Data dots -->
     <template v-for="(cat, i) in categories" :key="'dots-'+i">
       <circle :cx="getPoint(i, scores[cat] || 0).x" :cy="getPoint(i, scores[cat] || 0).y"
-              r="5" fill="#00f0ff" opacity="0.1" />
+              r="5" :fill="accentColor" opacity="0.1" />
       <circle :cx="getPoint(i, scores[cat] || 0).x" :cy="getPoint(i, scores[cat] || 0).y"
-              r="2.5" fill="#00f0ff" opacity="0.8" />
+              r="2.5" :fill="accentColor" opacity="0.8" />
     </template>
 
     <!-- Labels — positioned further out for mobile -->
@@ -62,7 +62,8 @@ import { computed } from 'vue'
 const props = defineProps({
   categories: Array,
   scores: Object,
-  labels: Array
+  labels: Array,
+  accentColor: { type: String, default: '#00f0ff' }
 })
 
 const size = 240

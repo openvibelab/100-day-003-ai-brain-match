@@ -100,11 +100,26 @@
         </div>
       </div>
 
+      <!-- ===== DEPTH INSIGHT ===== -->
+      <div class="glass-card rounded-2xl p-5 mb-4 animate-float-in-3">
+        <div class="flex items-start gap-3">
+          <span class="text-xl shrink-0 mt-0.5">{{ insightEmoji }}</span>
+          <div>
+            <div class="text-xs font-bold text-white/60 mb-1">{{ locale === 'zh' ? '深度洞察' : 'Depth Insight' }}</div>
+            <p class="text-[11px] text-white/35 leading-relaxed">{{ insightText }}</p>
+          </div>
+        </div>
+      </div>
+
       <!-- ===== SHARE ===== -->
-      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-3">
-        <p class="text-xs text-white/25 text-center mb-4">{{ t('cta.friends') }}</p>
+      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-4">
+        <p class="text-xs text-white/30 text-center mb-4">
+          {{ locale === 'zh'
+            ? `${spec.name.zh}专项我是${matchedModel.name}级，不服来战！`
+            : `I'm ${matchedModel.name} level in ${spec.name.en}. Beat that!` }}
+        </p>
         <button @click="shareResult"
-                class="w-full px-4 py-3 rounded-xl text-xs font-semibold
+                class="w-full px-4 py-3.5 rounded-xl text-xs font-semibold
                        bg-white/[0.03] border border-white/[0.06]
                        hover:border-white/15 hover:bg-white/[0.04]
                        transition-all duration-300 cursor-pointer active:scale-[0.97]
@@ -204,6 +219,52 @@ const difficultyBreakdown = computed(() => {
   }).filter(l => l.total > 0)
 })
 
+// Depth insight based on difficulty performance
+const insightEmoji = computed(() => {
+  const bd = difficultyBreakdown.value
+  const easy = bd.filter(d => d.level <= 2)
+  const hard = bd.filter(d => d.level >= 4)
+  const easyPct = easy.length ? easy.reduce((s, d) => s + d.pct, 0) / easy.length : 0
+  const hardPct = hard.length ? hard.reduce((s, d) => s + d.pct, 0) / hard.length : 0
+  if (hardPct > easyPct) return '🔥'
+  if (easyPct >= 80 && hardPct < 30) return '📚'
+  if (totalScore.value >= 80) return '👑'
+  return '💡'
+})
+
+const insightText = computed(() => {
+  const bd = difficultyBreakdown.value
+  const easy = bd.filter(d => d.level <= 2)
+  const hard = bd.filter(d => d.level >= 4)
+  const easyPct = easy.length ? easy.reduce((s, d) => s + d.pct, 0) / easy.length : 0
+  const hardPct = hard.length ? hard.reduce((s, d) => s + d.pct, 0) / hard.length : 0
+  const isZh = locale.value === 'zh'
+
+  if (hardPct > easyPct) {
+    return isZh
+      ? '你越难越兴奋？！难题答对率竟然比简单题还高，属于\"反向型选手\"——专治各种不服'
+      : 'You thrive on challenge! Your hard question accuracy is higher than easy ones — a true expert pattern.'
+  }
+  if (easyPct >= 80 && hardPct < 30) {
+    return isZh
+      ? '基础扎实但进阶壁垒还需突破。简单题稳如老狗，难题就有点慌了——多刷几轮再来！'
+      : 'Strong fundamentals, but the advanced stuff needs work. You ace the basics — now push into expert territory!'
+  }
+  if (totalScore.value >= 80) {
+    return isZh
+      ? '各难度全面碾压，不愧是fine-tuned专家。这个领域你可以出去教别人了'
+      : 'Crushing it across all difficulty levels. You\'re a domain expert — go teach someone!'
+  }
+  if (totalScore.value >= 50) {
+    return isZh
+      ? '中等水平，有潜力！知道得不少但还有盲区。再刷一轮看看能不能突破'
+      : 'Decent knowledge with room to grow. You know the field but haven\'t mastered the hard stuff yet.'
+  }
+  return isZh
+    ? '这个领域是你的新大陆！别灰心，很多题是真的难——换个自己更擅长的方向试试？'
+    : 'This field is new territory for you! Don\'t worry, many questions are genuinely hard — try a specialty you\'re more confident in?'
+})
+
 async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text)
@@ -222,8 +283,8 @@ async function copyText(text) {
 function shareResult() {
   const m = matchedModel.value, s = spec.value
   const text = locale.value === 'zh'
-    ? `🧠 刚做了"${s.name.zh}"深度测试，我居然是 ${m.name} 级别！\n得分 ${totalScore.value}/100\n\n来挑战你擅长的领域 👉 brain.openvibelab.com`
-    : `🧠 Took the "${s.name.en}" deep dive — I matched ${m.name}!\nScore: ${totalScore.value}/100\n\nTest YOUR specialty 👉 brain.openvibelab.com`
+    ? `🧠 ${s.name.zh}专项深度测试，${m.reaction.zh}${m.name}！\n得分 ${totalScore.value}/100\n\n来挑战你最擅长的领域 👉 brain.openvibelab.com\n\n#AI测试 #${s.name.zh} #测测你是哪款AI #知识测验`
+    : `🧠 ${s.name.en} deep dive: ${m.reaction.en} ${m.name}!\nScore: ${totalScore.value}/100\n\nTest YOUR specialty 👉 brain.openvibelab.com`
   copyText(text)
 }
 

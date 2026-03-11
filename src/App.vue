@@ -28,6 +28,7 @@
         key="quiz"
         :questions="quizQuestions"
         @complete="showResult"
+        @quit="goHome"
       />
       <ResultPage
         v-else-if="page === 'result'"
@@ -44,6 +45,7 @@
         key="special-quiz"
         :questions="quizQuestions"
         @complete="showSpecialResult"
+        @quit="goHome"
       />
       <SpecialResultPage
         v-else-if="page === 'special-result'"
@@ -59,7 +61,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import LangToggle from './components/LangToggle.vue'
 import StartPage from './components/StartPage.vue'
 import QuizPage from './components/QuizPage.vue'
@@ -73,9 +75,24 @@ const page = ref('start')
 const quizQuestions = ref([])
 const answers = ref([])
 const attempt = ref(0)
-const bestScore = ref(parseInt(localStorage.getItem('bestScore') || '0'))
 const lastQuestionIds = ref([])
 const currentSpecId = ref('')
+
+// Safe localStorage access (incognito mode)
+let storedBest = 0
+try { storedBest = parseInt(localStorage.getItem('bestScore') || '0') } catch {}
+const bestScore = ref(storedBest)
+
+// Check URL for shared result on load
+onMounted(() => {
+  const params = new URLSearchParams(window.location.search)
+  const sharedScore = params.get('score')
+  const sharedModel = params.get('model')
+  if (sharedScore && sharedModel) {
+    // Show a "challenge" banner on start page — the URL is just for context
+    // The user will see the start page with the challenger's info
+  }
+})
 
 function startQuiz(excludeIds = []) {
   quizQuestions.value = prepareQuiz(20, excludeIds)
@@ -98,7 +115,7 @@ function showResult(ans) {
   const score = Math.round((earned / maxPossible) * 100)
   if (score > bestScore.value) {
     bestScore.value = score
-    localStorage.setItem('bestScore', String(score))
+    try { localStorage.setItem('bestScore', String(score)) } catch {}
   }
 
   page.value = 'result'

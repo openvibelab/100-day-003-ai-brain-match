@@ -22,7 +22,7 @@
         {{ t('app.description') }}
       </p>
 
-      <!-- AI model parade — scrolling row on mobile -->
+      <!-- AI model parade -->
       <div class="mb-10 animate-float-in-3">
         <div class="flex flex-wrap justify-center gap-2">
           <span
@@ -70,23 +70,35 @@
         <p class="text-[11px] text-white/20 mt-4 tracking-wider">{{ t('app.startSub') }}</p>
       </div>
 
-      <!-- Deep Dive entry -->
-      <div class="mt-6 animate-float-in-5">
+      <!-- Deep Dive entry — prominent, with specialty icons -->
+      <div class="mt-8 animate-float-in-5">
         <button
           @click="$emit('deepDive')"
-          class="px-6 py-3 rounded-xl text-xs font-semibold
-                 bg-white/[0.02] border border-white/[0.06]
-                 hover:border-neon-purple/30 hover:bg-neon-purple/[0.03]
-                 transition-all duration-300 cursor-pointer active:scale-[0.97]
-                 text-white/35 hover:text-white/60"
+          class="w-full max-w-xs mx-auto p-4 rounded-2xl glass-card
+                 border border-neon-purple/15 hover:border-neon-purple/40
+                 hover:bg-neon-purple/[0.03]
+                 transition-all duration-300 cursor-pointer active:scale-[0.98]
+                 group"
         >
-          🧩 {{ t('special.deepDive') }}
-          <span class="block text-[10px] text-white/20 mt-0.5 font-normal">{{ t('special.deepDiveSub') }}</span>
+          <div class="text-sm font-bold text-white/70 group-hover:text-white/90 mb-2">
+            🧩 {{ t('special.deepDive') }}
+          </div>
+          <div class="flex justify-center gap-2 mb-2">
+            <span v-for="spec in specializations" :key="spec.id"
+                  class="w-8 h-8 rounded-lg flex items-center justify-center text-base
+                         transition-transform group-hover:scale-110"
+                  :style="{ background: spec.color + '10' }">
+              {{ spec.icon }}
+            </span>
+          </div>
+          <p class="text-[10px] text-white/25 group-hover:text-white/40">
+            {{ t('special.deepDiveSub') }}
+          </p>
         </button>
       </div>
 
       <!-- Attempt counter -->
-      <p v-if="attempt > 0" class="text-[11px] text-white/15 mt-2 animate-float-in-5">
+      <p v-if="attempt > 0" class="text-[11px] text-white/15 mt-4">
         {{ t('result.attempt') }} #{{ attempt + 1 }}
       </p>
     </div>
@@ -106,6 +118,7 @@
 <script setup>
 import { t } from '../lib/i18n.js'
 import { aiModels } from '../data/aiModels.js'
+import { specializations } from '../data/specializations.js'
 
 defineProps({
   attempt: { type: Number, default: 0 },

@@ -43,7 +43,7 @@
           <span class="text-lg text-white/15 ml-0.5">/100</span>
         </div>
 
-        <!-- Progress bar (clean, no overlapping markers) -->
+        <!-- Progress bar -->
         <div class="relative mb-5">
           <div class="w-full h-[6px] rounded-full bg-white/[0.04] overflow-hidden">
             <div class="h-full rounded-full transition-all duration-[1500ms] ease-out"
@@ -52,7 +52,6 @@
                    background: `linear-gradient(90deg, ${matchedModel.color}60, ${matchedModel.color})`
                  }" />
           </div>
-          <!-- Current position indicator -->
           <div class="absolute top-[-3px] w-3 h-3 rounded-full border-2 border-dark-bg transition-all duration-[1500ms]"
                :style="{ left: `calc(${totalScore}% - 6px)`, background: matchedModel.color }" />
         </div>
@@ -84,8 +83,40 @@
         </div>
       </div>
 
-      <!-- ===== RADAR CHART ===== -->
+      <!-- ===== SHARE (moved up!) ===== -->
       <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-2">
+        <p class="text-xs text-white/30 text-center mb-4">
+          {{ locale === 'zh'
+            ? `我居然是${matchedModel.name}！你敢来比吗 → 转发给最聪明的那个朋友`
+            : `I matched ${matchedModel.name}! Think you can beat me?` }}
+        </p>
+        <div class="flex gap-2.5">
+          <button @click="generateShareCard"
+                  class="flex-1 px-4 py-3.5 rounded-xl text-xs font-semibold
+                         bg-gradient-to-r from-neon-cyan/[0.06] to-neon-purple/[0.06]
+                         border border-neon-cyan/20 hover:border-neon-cyan/40
+                         transition-all duration-300 cursor-pointer active:scale-[0.97]
+                         text-white/60 hover:text-white/80">
+            🖼️ {{ t('result.shareCard') }}
+          </button>
+          <button @click="shareResult"
+                  class="flex-1 px-4 py-3.5 rounded-xl text-xs font-semibold
+                         bg-white/[0.03] border border-white/[0.06]
+                         hover:border-white/15
+                         transition-all duration-300 cursor-pointer active:scale-[0.97]
+                         text-white/50 hover:text-white/70">
+            📋 {{ t('result.share') }}
+          </button>
+        </div>
+        <Transition name="toast">
+          <p v-if="showCopied" class="text-center text-[11px] text-neon-green/70 mt-3">
+            ✓ {{ copiedMsg }}
+          </p>
+        </Transition>
+      </div>
+
+      <!-- ===== RADAR CHART ===== -->
+      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-3">
         <h3 class="text-[10px] uppercase tracking-[0.15em] text-white/25 mb-5 text-center">
           {{ t('result.breakdown') }}
         </h3>
@@ -93,6 +124,7 @@
           :categories="radarCategories"
           :scores="normalizedCatScores"
           :labels="radarLabels"
+          :accentColor="matchedModel.color"
         />
         <!-- Category pills -->
         <div class="flex flex-wrap justify-center gap-1.5 mt-5">
@@ -105,7 +137,7 @@
       </div>
 
       <!-- ===== THINKING STYLE ===== -->
-      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-3">
+      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-4">
         <h3 class="text-[10px] uppercase tracking-[0.15em] text-white/25 mb-5 text-center">
           {{ t('result.style') }}
         </h3>
@@ -136,34 +168,6 @@
             <span class="text-[10px] text-white/20 w-7 text-right tabular-nums">{{ style.pct }}%</span>
           </div>
         </div>
-      </div>
-
-      <!-- ===== SHARE ===== -->
-      <div class="glass-card rounded-2xl p-6 mb-4 animate-float-in-4">
-        <p class="text-xs text-white/25 text-center mb-4">{{ t('cta.friends') }}</p>
-        <div class="flex gap-2.5">
-          <button @click="shareResult"
-                  class="flex-1 px-4 py-3 rounded-xl text-xs font-semibold
-                         bg-white/[0.03] border border-white/[0.06]
-                         hover:border-neon-cyan/30 hover:bg-neon-cyan/[0.04]
-                         transition-all duration-300 cursor-pointer active:scale-[0.97]
-                         text-white/50 hover:text-white/70">
-            📋 {{ t('result.share') }}
-          </button>
-          <button @click="shareInvite"
-                  class="flex-1 px-4 py-3 rounded-xl text-xs font-semibold
-                         bg-white/[0.03] border border-white/[0.06]
-                         hover:border-neon-purple/30 hover:bg-neon-purple/[0.04]
-                         transition-all duration-300 cursor-pointer active:scale-[0.97]
-                         text-white/50 hover:text-white/70">
-            🔗 {{ t('result.shareInvite') }}
-          </button>
-        </div>
-        <Transition name="toast">
-          <p v-if="showCopied" class="text-center text-[11px] text-neon-green/70 mt-3">
-            ✓ {{ t('result.copied') }}
-          </p>
-        </Transition>
       </div>
 
       <!-- ===== RETRY OPTIONS ===== -->
@@ -200,6 +204,36 @@
         </a>
       </div>
     </div>
+
+    <!-- Hidden share card template (for html2canvas) -->
+    <div ref="shareCardRef" class="share-card" v-show="renderingCard"
+         style="position: fixed; left: -9999px; top: 0; width: 540px; height: 540px;">
+      <div style="width: 540px; height: 540px; background: linear-gradient(135deg, #05051a 0%, #0c0c2e 50%, #14082e 100%);
+                  display: flex; flex-direction: column; align-items: center; justify-content: center;
+                  font-family: Inter, system-ui, sans-serif; color: white; padding: 40px; box-sizing: border-box;">
+        <div style="font-size: 64px; margin-bottom: 12px;">{{ matchedModel.emoji }}</div>
+        <div style="font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">
+          {{ matchedModel.reaction[locale] }}
+        </div>
+        <div :style="{ fontSize: '36px', fontWeight: 900, color: matchedModel.color, marginBottom: '16px' }">
+          {{ matchedModel.name }}
+        </div>
+        <div style="font-size: 56px; font-weight: 900; margin-bottom: 4px;">
+          <span :style="{ color: matchedModel.color }">{{ totalScore }}</span>
+          <span style="font-size: 20px; color: rgba(255,255,255,0.2);">/100</span>
+        </div>
+        <div style="font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 8px;">
+          {{ thinkingStyle.icon }} {{ thinkingStyle.name[locale] }}
+          · {{ correctCount }}/{{ answers.length }} {{ locale === 'zh' ? '答对' : 'correct' }}
+        </div>
+        <div style="margin-top: auto; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 20px;">🧠</span>
+          <span style="font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: 1px;">
+            brain.openvibelab.com
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -219,7 +253,10 @@ const props = defineProps({
 
 defineEmits(['retry', 'retryDifferent'])
 const showCopied = ref(false)
+const copiedMsg = ref('')
 const animatedScore = ref(0)
+const shareCardRef = ref(null)
+const renderingCard = ref(false)
 
 const catColors = {
   science: '#00f0ff', history: '#a855f7', logic: '#39ff14',
@@ -266,6 +303,12 @@ const allStyles = computed(() => {
   return scores.map(s => ({ ...s, pct: Math.round(Math.max(0, s.raw / maxScore) * 100) }))
 })
 
+function showToast(msg) {
+  copiedMsg.value = msg
+  showCopied.value = true
+  setTimeout(() => showCopied.value = false, 2500)
+}
+
 async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text)
@@ -277,23 +320,57 @@ async function copyText(text) {
     document.execCommand('copy')
     document.body.removeChild(ta)
   }
-  showCopied.value = true
-  setTimeout(() => showCopied.value = false, 2500)
+  showToast(t('result.copied'))
 }
 
 function shareResult() {
   const m = matchedModel.value, s = thinkingStyle.value
   const text = locale.value === 'zh'
-    ? `🧠 ${m.reaction.zh}${m.name}！\nAI人格：${s.name.zh} ${s.icon}\n得分 ${totalScore.value}/100\n\n你是GPT-2还是Claude Opus？测了才知道 👉 brain.openvibelab.com`
+    ? `🧠 ${m.reaction.zh}${m.name}！\nAI人格：${s.name.zh} ${s.icon}\n得分 ${totalScore.value}/100\n\n你是GPT-2还是Claude Opus？测了才知道 👉 brain.openvibelab.com\n\n#测测你是哪款AI #AI测试 #大模型 #知识测验`
     : `🧠 AI Brain Match: ${m.reaction.en} ${m.name}!\nThinking style: ${s.name.en} ${s.icon}\nScore: ${totalScore.value}/100\n\nWhich AI are YOU? 👉 brain.openvibelab.com`
   copyText(text)
 }
 
-function shareInvite() {
-  const text = locale.value === 'zh'
-    ? `我测出来是${matchedModel.value.name}段位，你呢？不来试试？😏\n👉 brain.openvibelab.com`
-    : `I just scored ${matchedModel.value.name} on AI Brain Match! Think you can beat me? 😏\n👉 brain.openvibelab.com`
-  copyText(text)
+async function generateShareCard() {
+  renderingCard.value = true
+  await new Promise(r => setTimeout(r, 100)) // let DOM render
+
+  try {
+    const html2canvas = (await import('html2canvas')).default
+    const canvas = await html2canvas(shareCardRef.value, {
+      scale: 2,
+      backgroundColor: '#05051a',
+      logging: false,
+      useCORS: true
+    })
+
+    canvas.toBlob(async (blob) => {
+      if (!blob) return
+
+      // Try native share first (mobile)
+      if (navigator.share && navigator.canShare) {
+        const file = new File([blob], 'ai-brain-match.png', { type: 'image/png' })
+        try {
+          await navigator.share({ files: [file], title: 'AI Brain Match' })
+          return
+        } catch {}
+      }
+
+      // Fallback: download
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `ai-brain-match-${matchedModel.value.name.replace(/\s+/g, '-')}.png`
+      a.click()
+      URL.revokeObjectURL(url)
+      showToast(locale.value === 'zh' ? '图片已保存，去小红书发吧！' : 'Image saved! Share it!')
+    }, 'image/png')
+  } catch {
+    // Fallback to text share
+    shareResult()
+  } finally {
+    renderingCard.value = false
+  }
 }
 
 onMounted(() => {

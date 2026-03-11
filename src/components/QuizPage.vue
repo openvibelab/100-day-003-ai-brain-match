@@ -4,8 +4,15 @@
     <!-- Top bar -->
     <div class="w-full max-w-xl mb-8">
       <div class="flex justify-between items-center mb-3">
-        <!-- Left: question counter -->
+        <!-- Left: quit + question counter -->
         <div class="flex items-center gap-3">
+          <button @click="confirmQuit"
+                  class="w-7 h-7 rounded-lg flex items-center justify-center
+                         text-white/20 hover:text-white/50 hover:bg-white/[0.04]
+                         transition-all cursor-pointer text-sm"
+                  aria-label="Quit quiz">
+            &times;
+          </button>
           <span class="text-white/30 text-sm font-mono tabular-nums">
             {{ String(current + 1).padStart(2, '0') }}
             <span class="text-white/10">/</span>
@@ -146,7 +153,7 @@ import { ref, computed } from 'vue'
 import { t, locale } from '../lib/i18n.js'
 
 const props = defineProps({ questions: Array })
-const emit = defineEmits(['complete'])
+const emit = defineEmits(['complete', 'quit'])
 
 const current = ref(0)
 const answered = ref(null)
@@ -229,6 +236,11 @@ function getOptionClass(idx) {
   if (idx === answered.value)
     return 'border-neon-pink/40 bg-neon-pink/[0.06]'
   return 'border-white/[0.03] opacity-30'
+}
+
+function confirmQuit() {
+  const msg = locale.value === 'zh' ? '确定要退出吗？当前进度不会保存' : 'Quit? Your progress won\'t be saved.'
+  if (confirm(msg)) emit('quit')
 }
 
 function getCircleClass(idx) {

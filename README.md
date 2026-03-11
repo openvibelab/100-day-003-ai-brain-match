@@ -1,3 +1,5 @@
+[![中文版本](https://img.shields.io/badge/🇨🇳_中文版本-点击查看-blue?style=for-the-badge)](#中文版本)
+
 # AI Brain Match
 
 A fun quiz that compares your knowledge level to AI models — from GPT-2 to Claude Opus!
@@ -6,14 +8,17 @@ Live: https://brain.openvibelab.com
 
 ## Features
 
-- 25 questions across 7 categories: science, history, logic, coding, language, general knowledge, creativity
+- **142 bilingual questions** across 7 categories + 6 specialties
+- **General Quiz**: 52 questions, 20 per session, randomized every time
+- **Deep Dive Mode**: 6 specialty quizzes (Math & Physics, Bio & Medical, Chinese Culture, Advanced Coding, World History, Art & Literature), each with 15 questions and its own fine-tuned model tiers
 - Difficulty-weighted scoring (harder questions = more points)
-- Match your score to real AI models (GPT-2 → GPT-5)
+- Match your score to real AI models (GPT-2 → GPT-5, or specialty models like Med-PaLM 2, DeepSeek-R1, Devin-level)
 - Radar chart showing your strengths across categories
-- Thinking style analysis: Claude / Gemini / DeepSeek / GPT style
+- Thinking style analysis: Claude / Gemini / DeepSeek / GPT personality
+- Dynamic emotional result headlines per score tier
 - Share results with one click
-- Bilingual: EN + 中文
-- Mobile-friendly, cyberpunk dark UI
+- Bilingual: EN + 中文 (Xiaohongshu-style Chinese copy)
+- Mobile-friendly, cyberpunk dark UI with confetti
 
 ## Tech Stack
 
@@ -49,25 +54,29 @@ MIT
 
 ---
 
-<details>
-<summary>中文版本</summary>
+<a id="中文版本"></a>
 
-# AI 脑力对标
+## 中文版本
 
-一个有趣的测试，对比你的知识水平和各大AI模型——从GPT-2到Claude Opus！
+# 测测你是哪款AI
+
+一个超好玩的知识测试，看看你的知识量约等于哪个大模型——从GPT-2到Claude Opus！
 
 在线体验: https://brain.openvibelab.com
 
 ## 主要功能
 
-- 25道跨7大类别的题目：科学、历史、逻辑、编程、语言、通识、创造力
+- **142道双语题目**，覆盖7大类别 + 6个专项方向
+- **综合测试**：52道题库，每次随机抽20题，题目不重复
+- **专项深度挑战**：6个方向（数理基础、生物医学、中国传统文化、编程深度、世界历史、艺术文学），每个方向15题，配有专属fine-tuned模型段位
 - 难度加权评分（越难的题分值越高）
-- 将你的得分匹配到真实AI模型（GPT-2 → GPT-5）
-- 雷达图展示各维度优势
-- 思维风格分析：Claude风 / Gemini风 / DeepSeek风 / GPT风
-- 一键分享结果
+- 匹配真实AI模型段位（GPT-2 → GPT-5，或专项模型如 Med-PaLM 2、DeepSeek-R1、Devin-level）
+- 雷达图展示各维度能力
+- AI人格分析：Claude型 / Gemini型 / DeepSeek型 / GPT型
+- 动态情绪化结果标题（"我的智力水平竟然堪比..." / "Oops...我竟然只是..."）
+- 一键分享结果，小红书风格文案
 - 双语支持：中文 + English
-- 手机友好，赛博朋克暗色UI
+- 手机友好，赛博朋克暗色UI + 彩带庆祝
 
 ## 本地开发
 
@@ -82,4 +91,6 @@ npm run dev
 
 参见 `.env.example` —— MVP版本无需任何密钥。
 
-</details>
+## 开源协议
+
+MIT

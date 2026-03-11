@@ -73,7 +73,7 @@ export const aiModels = [
     scoreRange: [61, 72],
     emoji: '🎭',
     color: '#d97706',
-    reaction: { en: 'Nice! Your brain matches', zh: '我的智力水平竟然堪比' },
+    reaction: { en: 'Nice! My thinking style is close to', zh: '有点小骄傲，我的思维风格接近' },
     description: {
       en: 'You think like Claude Sonnet — sharp, nuanced, with great attention to detail and a warm touch.',
       zh: '思维有温度！像Claude Sonnet一样——细腻、有洞察力，AI界的"文艺青年"'
@@ -89,7 +89,7 @@ export const aiModels = [
     scoreRange: [73, 80],
     emoji: '💎',
     color: '#4285f4',
-    reaction: { en: 'Wow — you\'re on par with', zh: '我的智力水平竟然堪比' },
+    reaction: { en: 'Wow — you know a bit about everything, like', zh: '哇，各种都懂一点，我约等于' },
     description: {
       en: 'You\'re Gemini Pro level — broad knowledge across many domains with strong multimodal understanding.',
       zh: '知识面真的广！各个领域都能接住，就像Gemini——谷歌家的"六边形战士"'
@@ -105,7 +105,7 @@ export const aiModels = [
     scoreRange: [81, 88],
     emoji: '🔮',
     color: '#ef4444',
-    reaction: { en: 'Incredible — your brain rivals', zh: '我的智力水平竟然堪比' },
+    reaction: { en: 'Incredible — your brain rivals', zh: '理科大佬本佬，我堪比' },
     description: {
       en: 'DeepSeek-R1 level! You excel at deep reasoning, especially in math and logic. A true analytical mind.',
       zh: '理科大佬无疑了。深度推理拉满，数学逻辑尤其能打——DeepSeek-R1同款大脑'
