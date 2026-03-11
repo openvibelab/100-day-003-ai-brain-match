@@ -15,7 +15,7 @@
           {{ matchedModel.reaction[locale] }}
         </p>
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight"
-            :style="{ color: matchedModel.color }">
+            :style="{ color: matchedModel.color, textShadow: '0 0 30px ' + matchedModel.color + '60, 0 0 80px ' + matchedModel.color + '20' }">
           {{ matchedModel.name }}
         </h1>
         <p class="text-sm lg:text-base text-white/40 leading-relaxed max-w-xs lg:max-w-sm mx-auto">
@@ -37,7 +37,7 @@
         <!-- Big score -->
         <div class="text-center py-6">
           <span class="text-7xl lg:text-8xl font-black tabular-nums animate-score"
-                :style="{ color: matchedModel.color }">
+                :style="{ color: matchedModel.color, textShadow: '0 0 20px ' + matchedModel.color + '80, 0 0 60px ' + matchedModel.color + '30' }">
             {{ animatedScore }}
           </span>
           <span class="text-lg lg:text-xl text-white/15 ml-0.5">/100</span>
@@ -129,7 +129,7 @@
         <!-- Category pills -->
         <div class="flex flex-wrap justify-center gap-1.5 mt-5">
           <span v-for="cat in radarCategories" :key="cat"
-                class="px-2 py-0.5 rounded-md text-[9px] font-semibold tabular-nums"
+                class="px-2 py-0.5 rounded-md text-[11px] font-semibold tabular-nums"
                 :style="{ background: catColors[cat] + '10', color: catColors[cat] + 'bb' }">
             {{ t('cat.' + cat) }} {{ Math.round((normalizedCatScores[cat] || 0) * 100) }}%
           </span>
@@ -161,7 +161,7 @@
           <div v-for="style in allStyles" :key="style.id" class="flex items-center gap-2.5">
             <span class="text-sm w-5 text-center">{{ style.icon }}</span>
             <span class="text-[10px] text-white/25 w-14 shrink-0 truncate">{{ style.name[locale] }}</span>
-            <div class="flex-1 h-[5px] rounded-full bg-white/[0.04] overflow-hidden">
+            <div class="flex-1 h-[6px] rounded-full bg-white/[0.08] overflow-hidden">
               <div class="h-full rounded-full transition-all duration-1000"
                    :style="{ width: style.pct + '%', background: style.color + '90' }" />
             </div>
@@ -199,7 +199,7 @@
         {{ t('footer.day') }}
         <span class="mx-1.5 text-white/8">/</span>
         <a href="https://github.com/openvibelab" target="_blank"
-           class="text-neon-cyan/25 hover:text-neon-cyan/60 transition-colors duration-300">
+           class="text-neon-cyan/45 hover:text-neon-cyan/70 transition-colors duration-300">
           OpenVibeLab
         </a>
       </div>

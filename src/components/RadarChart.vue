@@ -19,7 +19,7 @@
       v-for="ring in 4" :key="'ring-'+ring"
       :points="getPolygonPoints(ring / 4)"
       fill="none"
-      :stroke="`rgba(255,255,255,${ring * 0.02})`"
+      :stroke="`rgba(255,255,255,${ring * 0.05})`"
       stroke-width="0.5"
     />
 
@@ -49,7 +49,7 @@
       v-for="(cat, i) in categories" :key="'label-'+i"
       :x="getLabelPos(i).x" :y="getLabelPos(i).y"
       text-anchor="middle" dominant-baseline="middle"
-      fill="rgba(255,255,255,0.35)" style="font-size: 9px; font-weight: 500;"
+      fill="rgba(255,255,255,0.55)" style="font-size: 11px; font-weight: 600;"
     >
       {{ labels[i] }}
     </text>

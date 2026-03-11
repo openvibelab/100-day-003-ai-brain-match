@@ -4,7 +4,10 @@
 
       <!-- Back button -->
       <button @click="$emit('back')"
-              class="mb-8 text-xs lg:text-sm text-white/30 hover:text-white/60 transition-colors cursor-pointer animate-float-in">
+              class="mb-8 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg
+                     text-xs lg:text-sm text-white/40 hover:text-white/70
+                     border border-white/[0.08] hover:border-white/[0.18]
+                     transition-all cursor-pointer animate-float-in">
         &larr; {{ t('special.back') }}
       </button>
 
@@ -55,7 +58,7 @@
           <!-- Model tiers preview -->
           <div class="flex gap-1.5 mt-3 ml-16">
             <span v-for="model in spec.models" :key="model.name"
-                  class="text-[9px] lg:text-[11px] px-1.5 py-0.5 lg:px-2 lg:py-1 rounded bg-white/[0.03] text-white/20">
+                  class="text-[11px] lg:text-xs px-1.5 py-0.5 lg:px-2 lg:py-1 rounded bg-white/[0.05] text-white/35">
               {{ model.emoji }} {{ model.name }}
             </span>
           </div>
@@ -72,7 +75,7 @@
         {{ t('footer.day') }}
         <span class="mx-1.5 text-white/8">/</span>
         <a href="https://github.com/openvibelab" target="_blank"
-           class="text-neon-cyan/25 hover:text-neon-cyan/60 transition-colors duration-300">
+           class="text-neon-cyan/45 hover:text-neon-cyan/70 transition-colors duration-300">
           OpenVibeLab
         </a>
       </div>

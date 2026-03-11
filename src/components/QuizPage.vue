@@ -48,7 +48,7 @@
       </div>
 
       <!-- Progress bar -->
-      <div class="w-full h-[3px] rounded-full bg-white/[0.04] overflow-hidden">
+      <div class="w-full h-[5px] rounded-full bg-white/[0.08] overflow-hidden">
         <div
           class="h-full rounded-full transition-all duration-700 ease-out"
           :style="{
@@ -102,7 +102,7 @@
             :key="idx"
             @click="selectAnswer(idx)"
             :disabled="answered !== null"
-            class="option-btn w-full text-left px-4 py-3.5 lg:px-5 lg:py-4 rounded-xl border
+            class="option-btn w-full text-left px-4 py-4 lg:px-5 lg:py-4 rounded-xl border
                    transition-all duration-300 cursor-pointer
                    disabled:cursor-default group"
             :class="getOptionClass(idx)"
@@ -130,7 +130,7 @@
                  border transition-all duration-300 cursor-pointer
                  active:scale-95"
           :class="current < questions.length - 1
-            ? 'bg-white/[0.04] border-white/10 hover:border-white/25 text-white/70 hover:text-white'
+            ? 'bg-neon-cyan/[0.08] border-neon-cyan/25 hover:border-neon-cyan/50 text-neon-cyan/80 hover:text-neon-cyan'
             : 'bg-neon-cyan/10 border-neon-cyan/30 hover:border-neon-cyan/60 text-neon-cyan'"
         >
           {{ current < questions.length - 1 ? t('quiz.next') + ' →' : '🎉 ' + t('result.title') }}
@@ -139,8 +139,8 @@
       <button
         v-if="answered === null"
         @click="skipQuestion"
-        class="px-5 py-2.5 rounded-xl text-[11px] text-white/20 border border-white/[0.04]
-               hover:border-white/10 hover:text-white/30 transition-all cursor-pointer"
+        class="px-5 py-3 rounded-xl text-xs text-white/35 border border-white/[0.08]
+               hover:border-white/15 hover:text-white/50 transition-all cursor-pointer min-h-[44px]"
       >
         {{ t('quiz.skip') }}
       </button>
@@ -202,7 +202,7 @@ function selectAnswer(idx) {
 
   flashClass.value = correct ? 'flash-correct' : 'flash-wrong'
   feedbackVisible.value = true
-  setTimeout(() => { feedbackVisible.value = false; flashClass.value = '' }, 1000)
+  setTimeout(() => { feedbackVisible.value = false; flashClass.value = '' }, 1600)
 }
 
 function skipQuestion() {
@@ -228,7 +228,7 @@ function goNext() {
 
 function getOptionClass(idx) {
   if (answered.value === null) {
-    return 'border-white/[0.06] hover:border-white/15 hover:bg-white/[0.02]'
+    return 'border-white/[0.12] hover:border-neon-cyan/30 hover:bg-neon-cyan/[0.03]'
   }
   const q = props.questions[current.value]
   if (idx === q.correctIndex)
@@ -245,7 +245,7 @@ function confirmQuit() {
 
 function getCircleClass(idx) {
   if (answered.value === null)
-    return 'border-white/15 text-white/30 group-hover:border-white/25 group-hover:text-white/50'
+    return 'border-white/25 text-white/55 group-hover:border-neon-cyan/40 group-hover:text-neon-cyan/80'
   const q = props.questions[current.value]
   if (idx === q.correctIndex)
     return 'border-neon-green/60 text-neon-green bg-neon-green/10'

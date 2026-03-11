@@ -21,7 +21,7 @@
           {{ matchedModel.reaction[locale] }}
         </p>
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight"
-            :style="{ color: spec.color }">
+            :style="{ color: spec.color, textShadow: '0 0 30px ' + spec.color + '60, 0 0 80px ' + spec.color + '20' }">
           {{ matchedModel.name }}
         </h1>
       </div>
@@ -39,7 +39,7 @@
         <!-- Big score -->
         <div class="text-center py-6">
           <span class="text-7xl lg:text-8xl font-black tabular-nums animate-score"
-                :style="{ color: spec.color }">
+                :style="{ color: spec.color, textShadow: '0 0 20px ' + spec.color + '80, 0 0 60px ' + spec.color + '30' }">
             {{ animatedScore }}
           </span>
           <span class="text-lg lg:text-xl text-white/15 ml-0.5">/100</span>
@@ -89,7 +89,7 @@
             <span class="text-[10px] lg:text-xs text-white/25 w-20 shrink-0 truncate">
               {{ d.label }}
             </span>
-            <div class="flex-1 h-[5px] rounded-full bg-white/[0.04] overflow-hidden">
+            <div class="flex-1 h-[6px] rounded-full bg-white/[0.08] overflow-hidden">
               <div class="h-full rounded-full transition-all duration-1000"
                    :style="{ width: d.pct + '%', background: spec.color + '90' }" />
             </div>
@@ -161,7 +161,7 @@
         {{ t('footer.day') }}
         <span class="mx-1.5 text-white/8">/</span>
         <a href="https://github.com/openvibelab" target="_blank"
-           class="text-neon-cyan/25 hover:text-neon-cyan/60 transition-colors duration-300">
+           class="text-neon-cyan/45 hover:text-neon-cyan/70 transition-colors duration-300">
           OpenVibeLab
         </a>
       </div>

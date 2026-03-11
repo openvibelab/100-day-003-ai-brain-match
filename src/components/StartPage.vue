@@ -15,10 +15,10 @@
       </h1>
 
       <!-- Subtitle -->
-      <p class="text-base md:text-lg lg:text-xl text-white/50 mb-2 animate-float-in-2">
+      <p class="text-base md:text-lg lg:text-xl text-white/65 mb-2 animate-float-in-2">
         {{ t('app.subtitle') }}
       </p>
-      <p class="text-xs lg:text-sm text-white/25 mb-10 leading-relaxed max-w-xs lg:max-w-sm mx-auto animate-float-in-2">
+      <p class="text-xs lg:text-sm text-white/45 mb-10 leading-relaxed max-w-xs lg:max-w-sm mx-auto animate-float-in-2">
         {{ t('app.description') }}
       </p>
 
@@ -29,13 +29,13 @@
             v-for="model in aiModels"
             :key="model.id"
             class="inline-flex items-center gap-1 px-2.5 py-1 lg:px-3 lg:py-1.5 rounded-full
-                   text-[10px] lg:text-xs font-semibold tracking-wide
+                   text-xs lg:text-sm font-semibold tracking-wide
                    transition-all duration-500 hover:scale-110 cursor-default
                    border"
             :style="{
               borderColor: model.color + '25',
               color: model.color + 'cc',
-              background: model.color + '08',
+              background: model.color + '12',
             }"
           >
             <span>{{ model.emoji }}</span>
@@ -59,11 +59,12 @@
         <button
           @click="$emit('start')"
           class="shimmer-btn relative px-14 py-4 lg:px-16 lg:py-5 rounded-2xl font-bold text-base lg:text-lg
-                 bg-gradient-to-r from-neon-cyan/12 via-neon-purple/12 to-neon-pink/12
-                 border border-neon-cyan/25 hover:border-neon-cyan/60
+                 bg-gradient-to-r from-neon-cyan/20 via-neon-purple/18 to-neon-pink/18
+                 border border-neon-cyan/50 hover:border-neon-cyan/80
+                 shadow-[0_0_24px_rgba(0,240,255,0.12)]
                  transition-all duration-500 cursor-pointer
-                 hover:shadow-[0_0_50px_rgba(0,240,255,0.15)]
-                 active:scale-[0.97] overflow-hidden"
+                 hover:shadow-[0_0_50px_rgba(0,240,255,0.25)]
+                 active:scale-[0.97] overflow-hidden min-h-[56px]"
         >
           <span class="relative z-10 text-white tracking-wide">{{ t('app.start') }}</span>
         </button>
@@ -75,8 +76,8 @@
         <button
           @click="$emit('deepDive')"
           class="w-full mx-auto px-6 py-5 lg:px-8 lg:py-6 rounded-2xl
-                 bg-gradient-to-br from-neon-purple/[0.06] via-neon-cyan/[0.03] to-transparent
-                 border border-neon-purple/20 hover:border-neon-purple/50
+                 bg-gradient-to-br from-neon-purple/[0.10] via-neon-cyan/[0.05] to-transparent
+                 border border-neon-purple/30 hover:border-neon-purple/60
                  hover:shadow-[0_0_40px_rgba(168,85,247,0.1)]
                  transition-all duration-300 cursor-pointer active:scale-[0.98]
                  group text-left"
@@ -116,7 +117,7 @@
       {{ t('footer.day') }}
       <span class="mx-1.5 text-white/10">/</span>
       <a href="https://github.com/openvibelab" target="_blank"
-         class="text-neon-cyan/25 hover:text-neon-cyan/60 transition-colors duration-300">
+         class="text-neon-cyan/45 hover:text-neon-cyan/70 transition-colors duration-300">
         OpenVibeLab
       </a>
     </div>
