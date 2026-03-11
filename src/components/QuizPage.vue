@@ -60,14 +60,15 @@
 
       <!-- Mini score -->
       <div class="flex justify-between items-center mt-2 text-[10px] lg:text-xs text-white/20">
-        <span>{{ correctCount }}/{{ current + (answered !== null ? 1 : 0) }} {{ locale === 'zh' ? '答对' : 'correct' }}</span>
+        <span>{{ correctCount }}/{{ answeredCount }} {{ locale === 'zh' ? '答对' : 'correct' }}</span>
         <span class="flex gap-[2px]">
           <span v-for="(a, i) in miniDots" :key="i"
-                class="w-[4px] h-[4px] rounded-full transition-all"
+                @click="a === 'skip' && jumpToQuestion(i)"
+                class="w-[5px] h-[5px] rounded-full transition-all"
                 :class="{
                   'bg-neon-green/60': a === 'correct',
                   'bg-neon-pink/60': a === 'wrong',
-                  'bg-white/10': a === 'skip',
+                  'bg-neon-orange/50 cursor-pointer hover:bg-neon-orange/80 scale-125': a === 'skip',
                   'bg-white/5': a === 'pending'
                 }" />
         </span>
@@ -122,6 +123,16 @@
 
     <!-- Bottom actions -->
     <div class="mt-7 flex items-center gap-3 min-h-[48px]">
+      <!-- Go back to skipped -->
+      <button
+        v-if="hasSkipped && answered === null"
+        @click="goBackToSkipped"
+        class="px-5 py-3 rounded-xl text-xs text-neon-orange/50 border border-neon-orange/15
+               hover:border-neon-orange/30 hover:text-neon-orange/80
+               transition-all cursor-pointer min-h-[44px]"
+      >
+        ← {{ locale === 'zh' ? '回到跳过的题' : 'Back to skipped' }}
+      </button>
       <Transition name="toast">
         <button
           v-if="answered !== null"
@@ -129,11 +140,11 @@
           class="px-10 py-2.5 lg:px-12 lg:py-3 rounded-xl font-semibold text-sm lg:text-base
                  border transition-all duration-300 cursor-pointer
                  active:scale-95"
-          :class="current < questions.length - 1
-            ? 'bg-neon-cyan/[0.08] border-neon-cyan/25 hover:border-neon-cyan/50 text-neon-cyan/80 hover:text-neon-cyan'
-            : 'bg-neon-cyan/10 border-neon-cyan/30 hover:border-neon-cyan/60 text-neon-cyan'"
+          :class="nextLabel.isFinish
+            ? 'bg-neon-cyan/10 border-neon-cyan/30 hover:border-neon-cyan/60 text-neon-cyan'
+            : 'bg-neon-cyan/[0.08] border-neon-cyan/25 hover:border-neon-cyan/50 text-neon-cyan/80 hover:text-neon-cyan'"
         >
-          {{ current < questions.length - 1 ? t('quiz.next') + ' →' : '🎉 ' + t('result.title') }}
+          {{ nextLabel.text }}
         </button>
       </Transition>
       <button
@@ -156,8 +167,8 @@ const props = defineProps({ questions: Array })
 const emit = defineEmits(['complete', 'quit'])
 
 const current = ref(0)
-const answered = ref(null)
-const answers = ref([])
+const answered = ref(null)        // selected index for current question (null = not yet answered)
+const answerMap = ref({})         // { [questionIndex]: { questionId, selectedIndex, correct, difficulty, category } }
 const feedbackVisible = ref(false)
 const lastCorrect = ref(false)
 const flashClass = ref('')
@@ -169,17 +180,52 @@ const catColors = {
 }
 
 const catColor = computed(() => catColors[props.questions[current.value]?.category] || '#00f0ff')
-const correctCount = computed(() => answers.value.filter(a => a.correct).length)
+
+const answeredCount = computed(() => Object.keys(answerMap.value).length)
+const correctCount = computed(() => Object.values(answerMap.value).filter(a => a.correct).length)
+const skippedIndices = computed(() => {
+  return Object.entries(answerMap.value)
+    .filter(([, a]) => a.selectedIndex === -1)
+    .map(([i]) => Number(i))
+})
+const hasSkipped = computed(() => skippedIndices.value.length > 0)
+const allDone = computed(() => answeredCount.value >= props.questions.length)
 
 // Mini progress dots
 const miniDots = computed(() => {
   return props.questions.map((_, i) => {
-    if (i >= answers.value.length) return 'pending'
-    const a = answers.value[i]
+    const a = answerMap.value[i]
+    if (!a) return 'pending'
     if (a.selectedIndex === -1) return 'skip'
     return a.correct ? 'correct' : 'wrong'
   })
 })
+
+// Next button label
+const nextLabel = computed(() => {
+  // After answering current question, what comes next?
+  const nextUnanswered = findNextUnanswered(current.value)
+  if (nextUnanswered === -1) {
+    // All done (or only skipped remain)
+    if (skippedIndices.value.length > 0) {
+      return { text: locale.value === 'zh' ? '回答跳过的题 →' : 'Answer skipped →', isFinish: false }
+    }
+    return { text: '🎉 ' + t('result.title'), isFinish: true }
+  }
+  return { text: t('quiz.next') + ' →', isFinish: false }
+})
+
+function findNextUnanswered(fromIndex) {
+  // Find next question after fromIndex that hasn't been answered (or was skipped)
+  for (let i = fromIndex + 1; i < props.questions.length; i++) {
+    if (!answerMap.value[i] || answerMap.value[i].selectedIndex === -1) return i
+  }
+  // Wrap around: check from start
+  for (let i = 0; i <= fromIndex; i++) {
+    if (!answerMap.value[i] || answerMap.value[i].selectedIndex === -1) return i
+  }
+  return -1
+}
 
 function selectAnswer(idx) {
   if (answered.value !== null) return
@@ -195,10 +241,10 @@ function selectAnswer(idx) {
     streak.value = 0
   }
 
-  answers.value.push({
+  answerMap.value[current.value] = {
     questionId: q.id, selectedIndex: idx, correct,
     difficulty: q.difficulty, category: q.category
-  })
+  }
 
   flashClass.value = correct ? 'flash-correct' : 'flash-wrong'
   feedbackVisible.value = true
@@ -208,21 +254,46 @@ function selectAnswer(idx) {
 function skipQuestion() {
   const q = props.questions[current.value]
   streak.value = 0
-  answers.value.push({
+  answerMap.value[current.value] = {
     questionId: q.id, selectedIndex: -1, correct: false,
     difficulty: q.difficulty, category: q.category
-  })
+  }
   goNext()
 }
 
 function nextQuestion() { goNext() }
 
 function goNext() {
-  if (current.value < props.questions.length - 1) {
-    current.value++
-    answered.value = null
+  const next = findNextUnanswered(current.value)
+  if (next === -1) {
+    // All answered — submit
+    const finalAnswers = props.questions.map((_, i) => answerMap.value[i])
+    emit('complete', finalAnswers)
   } else {
-    emit('complete', answers.value)
+    current.value = next
+    answered.value = null
+  }
+}
+
+function jumpToQuestion(idx) {
+  if (answerMap.value[idx]?.selectedIndex === -1) {
+    current.value = idx
+    answered.value = null
+    delete answerMap.value[idx]
+  }
+}
+
+function goBackToSkipped() {
+  // Find the nearest skipped question before current, or wrap
+  const skipped = skippedIndices.value.sort((a, b) => a - b)
+  // Prefer one before current
+  const before = skipped.filter(i => i < current.value)
+  const target = before.length > 0 ? before[before.length - 1] : skipped[0]
+  if (target !== undefined) {
+    current.value = target
+    answered.value = null
+    // Clear the skip so user sees a fresh question
+    delete answerMap.value[target]
   }
 }
 
