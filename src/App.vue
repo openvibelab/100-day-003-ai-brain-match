@@ -15,6 +15,13 @@
         :attempt="attempt"
         :bestScore="bestScore"
         @start="startQuiz"
+        @deepDive="goDeepDive"
+      />
+      <SpecialSelectPage
+        v-else-if="page === 'special-select'"
+        key="special-select"
+        @select="startSpecialQuiz"
+        @back="goHome"
       />
       <QuizPage
         v-else-if="page === 'quiz'"
@@ -32,6 +39,21 @@
         @retry="retryNew"
         @retryDifferent="retryDifferent"
       />
+      <QuizPage
+        v-else-if="page === 'special-quiz'"
+        key="special-quiz"
+        :questions="quizQuestions"
+        @complete="showSpecialResult"
+      />
+      <SpecialResultPage
+        v-else-if="page === 'special-result'"
+        key="special-result"
+        :answers="answers"
+        :specId="currentSpecId"
+        @retrySpecial="retrySpecial"
+        @pickOther="goDeepDive"
+        @backToMain="goHome"
+      />
     </Transition>
   </div>
 </template>
@@ -42,7 +64,10 @@ import LangToggle from './components/LangToggle.vue'
 import StartPage from './components/StartPage.vue'
 import QuizPage from './components/QuizPage.vue'
 import ResultPage from './components/ResultPage.vue'
+import SpecialSelectPage from './components/SpecialSelectPage.vue'
+import SpecialResultPage from './components/SpecialResultPage.vue'
 import { prepareQuiz } from './data/questions.js'
+import { prepareSpecialQuiz } from './data/specializations.js'
 
 const page = ref('start')
 const quizQuestions = ref([])
@@ -50,6 +75,7 @@ const answers = ref([])
 const attempt = ref(0)
 const bestScore = ref(parseInt(localStorage.getItem('bestScore') || '0'))
 const lastQuestionIds = ref([])
+const currentSpecId = ref('')
 
 function startQuiz(excludeIds = []) {
   quizQuestions.value = prepareQuiz(20, excludeIds)
@@ -85,5 +111,33 @@ function retryNew() {
 
 function retryDifferent() {
   startQuiz(lastQuestionIds.value)
+}
+
+function goHome() {
+  page.value = 'start'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function goDeepDive() {
+  page.value = 'special-select'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function startSpecialQuiz(specId) {
+  currentSpecId.value = specId
+  quizQuestions.value = prepareSpecialQuiz(specId, 15)
+  answers.value = []
+  page.value = 'special-quiz'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function showSpecialResult(ans) {
+  answers.value = ans
+  page.value = 'special-result'
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function retrySpecial() {
+  startSpecialQuiz(currentSpecId.value)
 }
 </script>

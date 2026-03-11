@@ -70,6 +70,21 @@
         <p class="text-[11px] text-white/20 mt-4 tracking-wider">{{ t('app.startSub') }}</p>
       </div>
 
+      <!-- Deep Dive entry -->
+      <div class="mt-6 animate-float-in-5">
+        <button
+          @click="$emit('deepDive')"
+          class="px-6 py-3 rounded-xl text-xs font-semibold
+                 bg-white/[0.02] border border-white/[0.06]
+                 hover:border-neon-purple/30 hover:bg-neon-purple/[0.03]
+                 transition-all duration-300 cursor-pointer active:scale-[0.97]
+                 text-white/35 hover:text-white/60"
+        >
+          🧩 {{ t('special.deepDive') }}
+          <span class="block text-[10px] text-white/20 mt-0.5 font-normal">{{ t('special.deepDiveSub') }}</span>
+        </button>
+      </div>
+
       <!-- Attempt counter -->
       <p v-if="attempt > 0" class="text-[11px] text-white/15 mt-2 animate-float-in-5">
         {{ t('result.attempt') }} #{{ attempt + 1 }}
@@ -96,5 +111,5 @@ defineProps({
   attempt: { type: Number, default: 0 },
   bestScore: { type: Number, default: 0 }
 })
-defineEmits(['start'])
+defineEmits(['start', 'deepDive'])
 </script>
