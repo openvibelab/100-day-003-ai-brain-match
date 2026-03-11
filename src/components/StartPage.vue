@@ -70,30 +70,38 @@
         <p class="text-[11px] lg:text-xs text-white/20 mt-4 tracking-wider">{{ t('app.startSub') }}</p>
       </div>
 
-      <!-- Deep Dive entry — prominent, with specialty icons -->
-      <div class="mt-8 animate-float-in-5">
+      <!-- Deep Dive entry -->
+      <div class="mt-10 animate-float-in-5">
         <button
           @click="$emit('deepDive')"
-          class="w-full max-w-xs mx-auto p-4 rounded-2xl glass-card
-                 border border-neon-purple/15 hover:border-neon-purple/40
-                 hover:bg-neon-purple/[0.03]
+          class="w-full mx-auto px-6 py-5 lg:px-8 lg:py-6 rounded-2xl
+                 bg-gradient-to-br from-neon-purple/[0.06] via-neon-cyan/[0.03] to-transparent
+                 border border-neon-purple/20 hover:border-neon-purple/50
+                 hover:shadow-[0_0_40px_rgba(168,85,247,0.1)]
                  transition-all duration-300 cursor-pointer active:scale-[0.98]
-                 group"
+                 group text-left"
         >
-          <div class="text-sm lg:text-base font-bold text-white/70 group-hover:text-white/90 mb-2">
-            🧩 {{ t('special.deepDive') }}
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-2xl lg:text-3xl">🧩</span>
+            <div>
+              <div class="text-base lg:text-lg font-bold text-white/80 group-hover:text-white">
+                {{ t('special.deepDive') }}
+              </div>
+              <p class="text-xs lg:text-sm text-white/30 group-hover:text-white/50 mt-0.5">
+                {{ t('special.deepDiveSub') }}
+              </p>
+            </div>
           </div>
-          <div class="flex justify-center gap-2 mb-2">
+          <div class="flex flex-wrap gap-2.5 mt-2">
             <span v-for="spec in specializations" :key="spec.id"
-                  class="w-8 h-8 rounded-lg flex items-center justify-center text-base
-                         transition-transform group-hover:scale-110"
-                  :style="{ background: spec.color + '10' }">
-              {{ spec.icon }}
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl
+                         text-xs lg:text-sm font-medium
+                         transition-all duration-300 group-hover:scale-105"
+                  :style="{ background: spec.color + '12', color: spec.color + 'bb', border: '1px solid ' + spec.color + '18' }">
+              <span class="text-base">{{ spec.icon }}</span>
+              {{ spec.name[locale] }}
             </span>
           </div>
-          <p class="text-[10px] text-white/25 group-hover:text-white/40">
-            {{ t('special.deepDiveSub') }}
-          </p>
         </button>
       </div>
 
@@ -116,7 +124,7 @@
 </template>
 
 <script setup>
-import { t } from '../lib/i18n.js'
+import { t, locale } from '../lib/i18n.js'
 import { aiModels } from '../data/aiModels.js'
 import { specializations } from '../data/specializations.js'
 
