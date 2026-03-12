@@ -1,10 +1,4 @@
 <template>
-  <!-- Animated background -->
-  <div class="bg-grid" />
-  <div class="bg-orb bg-orb-1" />
-  <div class="bg-orb bg-orb-2" />
-  <div class="bg-orb bg-orb-3" />
-
   <Analytics />
   <div class="relative z-10 max-w-3xl mx-auto">
     <LangToggle />

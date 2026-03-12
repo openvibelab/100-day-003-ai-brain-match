@@ -6,55 +6,52 @@
       <div class="text-center mb-12 animate-float-in">
         <!-- Specialty badge -->
         <div class="inline-flex items-center gap-1.5 px-3 py-1 lg:px-4 lg:py-1.5 rounded-full text-[10px] lg:text-xs font-semibold mb-5"
-             :style="{ background: spec.color + '10', color: spec.color + 'cc', border: '1px solid ' + spec.color + '20' }">
+             :style="{ background: spec.color + '0c', color: spec.color, border: '2px solid ' + spec.color + '20' }">
           {{ spec.icon }} {{ spec.name[locale] }}
         </div>
 
-        <!-- Emoji with color glow -->
         <div class="relative inline-flex items-center justify-center mb-5">
-          <div class="absolute w-24 h-24 rounded-full blur-3xl opacity-25"
-               :style="{ background: spec.color }" />
           <span class="relative text-7xl lg:text-8xl select-none">{{ matchedModel.emoji }}</span>
         </div>
 
-        <p class="text-sm lg:text-base text-white/40 mb-3">
+        <p class="text-sm lg:text-base text-ink-secondary mb-3">
           {{ matchedModel.reaction[locale] }}
         </p>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight"
-            :style="{ color: spec.color, textShadow: '0 0 30px ' + spec.color + '60, 0 0 80px ' + spec.color + '20' }">
+        <h1 class="heading-text text-4xl md:text-5xl lg:text-6xl mb-4 leading-tight"
+            :style="{ color: spec.color }">
           {{ matchedModel.name }}
         </h1>
       </div>
 
       <!-- ===== SCORE CARD ===== -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-1">
+      <div class="quiz-card rounded-xl p-6 lg:p-8 mb-4 animate-float-in-1">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-white/25">{{ t('result.score') }}</span>
+          <span class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-ink-muted">{{ t('result.score') }}</span>
           <span class="text-[10px] px-2.5 py-1 rounded-full font-semibold"
-                :style="{ background: spec.color + '10', color: spec.color + '90' }">
+                :style="{ background: spec.color + '0c', color: spec.color }">
             {{ spec.name[locale] }}
           </span>
         </div>
 
         <!-- Big score -->
         <div class="text-center py-6">
-          <span class="text-7xl lg:text-8xl font-black tabular-nums animate-score"
-                :style="{ color: spec.color, textShadow: '0 0 20px ' + spec.color + '80, 0 0 60px ' + spec.color + '30' }">
+          <span class="heading-text text-7xl lg:text-8xl tabular-nums animate-score"
+                :style="{ color: spec.color }">
             {{ animatedScore }}
           </span>
-          <span class="text-lg lg:text-xl text-white/15 ml-0.5">/100</span>
+          <span class="text-lg lg:text-xl text-ink-muted ml-0.5">/100</span>
         </div>
 
         <!-- Progress bar -->
         <div class="relative mb-5">
-          <div class="w-full h-[6px] rounded-full bg-white/[0.04] overflow-hidden">
-            <div class="h-full rounded-full transition-all duration-[1500ms] ease-out"
+          <div class="w-full h-[6px] rounded-full bg-border overflow-hidden">
+            <div class="h-full rounded-full progress-fill"
                  :style="{
                    width: totalScore + '%',
-                   background: `linear-gradient(90deg, ${spec.color}60, ${spec.color})`
+                   background: spec.color
                  }" />
           </div>
-          <div class="absolute top-[-3px] w-3 h-3 rounded-full border-2 border-dark-bg transition-all duration-[1500ms]"
+          <div class="absolute top-[-3px] w-3 h-3 rounded-full border-2 border-card transition-all duration-[1500ms]"
                :style="{ left: `calc(${totalScore}% - 6px)`, background: spec.color }" />
         </div>
 
@@ -64,8 +61,8 @@
                class="flex items-center justify-center transition-all duration-500 text-[9px]"
                :style="{
                  flex: model.scoreRange[1] - model.scoreRange[0],
-                 background: model.name === matchedModel.name ? spec.color + '20' : 'rgba(255,255,255,0.02)',
-                 borderRight: '1px solid rgba(255,255,255,0.04)'
+                 background: model.name === matchedModel.name ? spec.color + '12' : 'rgba(42,33,24,0.03)',
+                 borderRight: '1px solid rgba(42,33,24,0.06)'
                }">
             <span :style="{ opacity: model.name === matchedModel.name ? 1 : 0.3 }">
               {{ model.emoji }}
@@ -74,26 +71,26 @@
         </div>
 
         <!-- Stats -->
-        <div class="flex justify-center gap-5 text-[11px] lg:text-xs text-white/25">
+        <div class="flex justify-center gap-5 text-[11px] lg:text-xs text-ink-muted">
           <span class="tabular-nums">{{ correctCount }}/{{ answers.length }} {{ t('result.correct') }}</span>
         </div>
       </div>
 
       <!-- ===== DIFFICULTY BREAKDOWN ===== -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-2">
-        <h3 class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-white/25 mb-5 text-center">
+      <div class="quiz-card rounded-xl p-6 lg:p-8 mb-4 animate-float-in-2">
+        <h3 class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-ink-muted mb-5 text-center">
           {{ t('special.diffBreakdown') }}
         </h3>
         <div class="space-y-2.5">
           <div v-for="d in difficultyBreakdown" :key="d.level" class="flex items-center gap-2.5">
-            <span class="text-[10px] lg:text-xs text-white/25 w-20 shrink-0 truncate">
+            <span class="text-[10px] lg:text-xs text-ink-muted w-20 shrink-0 truncate">
               {{ d.label }}
             </span>
-            <div class="flex-1 h-[6px] rounded-full bg-white/[0.08] overflow-hidden">
+            <div class="flex-1 h-[6px] rounded-full bg-border overflow-hidden">
               <div class="h-full rounded-full transition-all duration-1000"
-                   :style="{ width: d.pct + '%', background: spec.color + '90' }" />
+                   :style="{ width: d.pct + '%', background: spec.color }" />
             </div>
-            <span class="text-[10px] text-white/20 w-12 text-right tabular-nums">
+            <span class="text-[10px] text-ink-muted w-12 text-right tabular-nums">
               {{ d.correct }}/{{ d.total }}
             </span>
           </div>
@@ -101,33 +98,32 @@
       </div>
 
       <!-- ===== DEPTH INSIGHT ===== -->
-      <div class="glass-card rounded-2xl p-5 lg:p-7 mb-4 animate-float-in-3">
+      <div class="quiz-card rounded-xl p-5 lg:p-7 mb-4 animate-float-in-3">
         <div class="flex items-start gap-3">
           <span class="text-xl lg:text-2xl shrink-0 mt-0.5">{{ insightEmoji }}</span>
           <div>
-            <div class="text-xs lg:text-sm font-bold text-white/60 mb-1">{{ locale === 'zh' ? '深度洞察' : 'Depth Insight' }}</div>
-            <p class="text-[11px] lg:text-xs text-white/35 leading-relaxed">{{ insightText }}</p>
+            <div class="text-xs lg:text-sm font-bold text-ink mb-1">{{ locale === 'zh' ? '深度洞察' : 'Depth Insight' }}</div>
+            <p class="text-[11px] lg:text-xs text-ink-secondary leading-relaxed">{{ insightText }}</p>
           </div>
         </div>
       </div>
 
       <!-- ===== SHARE ===== -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-4">
-        <p class="text-xs lg:text-sm text-white/30 text-center mb-4">
+      <div class="quiz-card rounded-xl p-6 lg:p-8 mb-4 animate-float-in-4">
+        <p class="text-xs lg:text-sm text-ink-secondary text-center mb-4">
           {{ locale === 'zh'
             ? `${spec.name.zh}专项我是${matchedModel.name}级，不服来战！`
             : `I'm ${matchedModel.name} level in ${spec.name.en}. Beat that!` }}
         </p>
         <button @click="shareResult"
                 class="w-full px-4 py-3.5 lg:py-4 rounded-xl text-xs lg:text-sm font-semibold
-                       bg-white/[0.03] border border-white/[0.06]
-                       hover:border-white/15 hover:bg-white/[0.04]
+                       bg-sand border-2 border-border hover:border-ink-muted
                        transition-all duration-300 cursor-pointer active:scale-[0.97]
-                       text-white/50 hover:text-white/70">
+                       text-ink-secondary">
           📋 {{ t('result.share') }}
         </button>
         <Transition name="toast">
-          <p v-if="showCopied" class="text-center text-[11px] text-neon-green/70 mt-3">
+          <p v-if="showCopied" class="text-center text-[11px] text-pop-green mt-3">
             ✓ {{ t('result.copied') }}
           </p>
         </Transition>
@@ -137,31 +133,31 @@
       <div class="space-y-2.5 mb-8 animate-float-in-4">
         <button @click="$emit('retrySpecial')"
                 class="w-full px-5 py-4 lg:py-5 rounded-xl text-sm lg:text-base text-center
-                       glass-card hover:border-neon-cyan/20
+                       quiz-card hover:border-pop-blue/30
                        transition-all duration-300 cursor-pointer active:scale-[0.98]">
-          <span class="text-white/70 font-semibold">🎲 {{ t('special.retry') }}</span>
-          <span class="block text-[10px] text-white/20 mt-1">{{ t('special.retryHint') }}</span>
+          <span class="text-ink font-semibold">🎲 {{ t('special.retry') }}</span>
+          <span class="block text-[10px] text-ink-muted mt-1">{{ t('special.retryHint') }}</span>
         </button>
         <button @click="$emit('pickOther')"
                 class="w-full px-5 py-3.5 lg:py-4 rounded-xl text-sm lg:text-base text-center
-                       glass-card hover:border-neon-purple/20
+                       quiz-card hover:border-pop-purple/30
                        transition-all duration-300 cursor-pointer active:scale-[0.98]">
-          <span class="text-neon-purple/60 font-semibold">🧩 {{ t('special.pickOther') }}</span>
+          <span class="text-pop-purple font-semibold">🧩 {{ t('special.pickOther') }}</span>
         </button>
         <button @click="$emit('backToMain')"
                 class="w-full px-5 py-3 lg:py-3.5 rounded-xl text-xs lg:text-sm text-center
-                       text-white/25 hover:text-white/50
+                       text-ink-muted hover:text-ink-secondary
                        transition-all duration-300 cursor-pointer">
           &larr; {{ t('special.backToMain') }}
         </button>
       </div>
 
       <!-- Footer -->
-      <div class="text-center text-[11px] text-white/15 pb-8 tracking-wider">
+      <div class="text-center text-[11px] text-ink-muted pb-8 tracking-wider">
         {{ t('footer.day') }}
-        <span class="mx-1.5 text-white/8">/</span>
+        <span class="mx-1.5 text-border">/</span>
         <a href="https://github.com/openvibelab" target="_blank"
-           class="text-neon-cyan/45 hover:text-neon-cyan/70 transition-colors duration-300">
+           class="text-pop-blue/60 hover:text-pop-blue transition-colors duration-300">
           OpenVibeLab
         </a>
       </div>
@@ -219,7 +215,6 @@ const difficultyBreakdown = computed(() => {
   }).filter(l => l.total > 0)
 })
 
-// Depth insight based on difficulty performance
 const insightEmoji = computed(() => {
   const bd = difficultyBreakdown.value
   const easy = bd.filter(d => d.level <= 2)
@@ -304,7 +299,7 @@ onMounted(() => {
     confetti({
       particleCount: 60, spread: 55, startVelocity: 30,
       origin: { y: 0.35 },
-      colors: [spec.value.color, '#00f0ff', '#a855f7'],
+      colors: [spec.value.color, '#3a7bd5', '#7c5cbf', '#f5c542'],
       gravity: 1.2
     })
   }).catch(() => {})
@@ -313,6 +308,6 @@ onMounted(() => {
 
 <style scoped>
 .toast-enter-active { animation: fade-up 0.3s ease-out; }
-.toast-leave-active { transition: all 0.2s ease-in; opacity: 0; }
+.toast-leave-active { transition: all 0.2s ease-out; opacity: 0; }
 @keyframes fade-up { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 </style>

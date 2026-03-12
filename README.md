@@ -18,7 +18,7 @@ Live: https://brain.openvibelab.com
 - Dynamic emotional result headlines per score tier
 - Share results with one click
 - Bilingual: EN + 中文 (Xiaohongshu-style Chinese copy)
-- Mobile-friendly, cyberpunk dark UI with confetti
+- Mobile-friendly, retro-pop light UI (cream + bold colors) with confetti
 
 ## Tech Stack
 
@@ -76,7 +76,7 @@ MIT
 - 动态情绪化结果标题（"我的智力水平竟然堪比..." / "Oops...我竟然只是..."）
 - 一键分享结果，小红书风格文案
 - 双语支持：中文 + English
-- 手机友好，赛博朋克暗色UI + 彩带庆祝
+- 手机友好，复古流行亮色UI（奶油色底 + 大胆配色）+ 彩带庆祝
 
 ## 本地开发
 

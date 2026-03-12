@@ -4,55 +4,51 @@
 
       <!-- ===== HERO: Matched model ===== -->
       <div class="text-center mb-12 animate-float-in">
-        <!-- Emoji with color glow -->
         <div class="relative inline-flex items-center justify-center mb-5">
-          <div class="absolute w-24 h-24 rounded-full blur-3xl opacity-25"
-               :style="{ background: matchedModel.color }" />
           <span class="relative text-7xl lg:text-8xl select-none">{{ matchedModel.emoji }}</span>
         </div>
 
-        <p class="text-sm lg:text-base text-white/40 mb-3">
+        <p class="text-sm lg:text-base text-ink-secondary mb-3">
           {{ matchedModel.reaction[locale] }}
         </p>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight"
-            :style="{ color: matchedModel.color, textShadow: '0 0 30px ' + matchedModel.color + '60, 0 0 80px ' + matchedModel.color + '20' }">
+        <h1 class="heading-text text-4xl md:text-5xl lg:text-6xl mb-4 leading-tight"
+            :style="{ color: matchedModel.color }">
           {{ matchedModel.name }}
         </h1>
-        <p class="text-sm lg:text-base text-white/40 leading-relaxed max-w-xs lg:max-w-sm mx-auto">
+        <p class="text-sm lg:text-base text-ink-secondary leading-relaxed max-w-xs lg:max-w-sm mx-auto">
           {{ matchedModel.description[locale] }}
         </p>
       </div>
 
       <!-- ===== SCORE CARD ===== -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-1">
-        <!-- Header -->
+      <div class="quiz-card rounded-xl p-6 lg:p-8 mb-4 animate-float-in-1">
         <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-white/25">{{ t('result.score') }}</span>
+          <span class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-ink-muted">{{ t('result.score') }}</span>
           <span v-if="isNewBest"
-                class="text-[10px] px-2.5 py-1 rounded-full bg-neon-yellow/10 text-neon-yellow/80 font-semibold animate-bounce-in">
+                class="text-[10px] px-2.5 py-1 rounded-full bg-pop-yellow/10 text-pop-yellow font-semibold animate-pop-in">
             &#9733; {{ t('result.newBest') }}
           </span>
         </div>
 
         <!-- Big score -->
         <div class="text-center py-6">
-          <span class="text-7xl lg:text-8xl font-black tabular-nums animate-score"
-                :style="{ color: matchedModel.color, textShadow: '0 0 20px ' + matchedModel.color + '80, 0 0 60px ' + matchedModel.color + '30' }">
+          <span class="heading-text text-7xl lg:text-8xl tabular-nums animate-score"
+                :style="{ color: matchedModel.color }">
             {{ animatedScore }}
           </span>
-          <span class="text-lg lg:text-xl text-white/15 ml-0.5">/100</span>
+          <span class="text-lg lg:text-xl text-ink-muted ml-0.5">/100</span>
         </div>
 
         <!-- Progress bar -->
         <div class="relative mb-5">
-          <div class="w-full h-[6px] rounded-full bg-white/[0.04] overflow-hidden">
-            <div class="h-full rounded-full transition-all duration-[1500ms] ease-out"
+          <div class="w-full h-[6px] rounded-full bg-border overflow-hidden">
+            <div class="h-full rounded-full progress-fill"
                  :style="{
                    width: totalScore + '%',
-                   background: `linear-gradient(90deg, ${matchedModel.color}60, ${matchedModel.color})`
+                   background: matchedModel.color
                  }" />
           </div>
-          <div class="absolute top-[-3px] w-3 h-3 rounded-full border-2 border-dark-bg transition-all duration-[1500ms]"
+          <div class="absolute top-[-3px] w-3 h-3 rounded-full border-2 border-card transition-all duration-[1500ms]"
                :style="{ left: `calc(${totalScore}% - 6px)`, background: matchedModel.color }" />
         </div>
 
@@ -62,8 +58,8 @@
                class="flex items-center justify-center transition-all duration-500 text-[9px]"
                :style="{
                  flex: model.scoreRange[1] - model.scoreRange[0],
-                 background: model.id === matchedModel.id ? model.color + '20' : 'rgba(255,255,255,0.02)',
-                 borderRight: '1px solid rgba(255,255,255,0.04)'
+                 background: model.id === matchedModel.id ? model.color + '15' : 'rgba(42,33,24,0.03)',
+                 borderRight: '1px solid rgba(42,33,24,0.06)'
                }">
             <span :style="{ opacity: model.id === matchedModel.id ? 1 : 0.3 }">
               {{ model.emoji }}
@@ -72,20 +68,20 @@
         </div>
 
         <!-- Stats -->
-        <div class="flex justify-center gap-5 text-[11px] lg:text-xs text-white/25">
+        <div class="flex justify-center gap-5 text-[11px] lg:text-xs text-ink-muted">
           <span class="tabular-nums">{{ t('result.attempt') }} #{{ attempt }}</span>
-          <span class="text-white/8">|</span>
+          <span class="text-border">|</span>
           <span class="tabular-nums">{{ correctCount }}/{{ answers.length }} {{ t('result.correct') }}</span>
           <template v-if="bestScore > 0">
-            <span class="text-white/8">|</span>
+            <span class="text-border">|</span>
             <span class="tabular-nums">{{ t('result.best') }}: {{ bestScore }}</span>
           </template>
         </div>
       </div>
 
-      <!-- ===== SHARE (moved up!) ===== -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-2">
-        <p class="text-xs lg:text-sm text-white/30 text-center mb-4">
+      <!-- ===== SHARE ===== -->
+      <div class="quiz-card rounded-xl p-6 lg:p-8 mb-4 animate-float-in-2">
+        <p class="text-xs lg:text-sm text-ink-secondary text-center mb-4">
           {{ locale === 'zh'
             ? `我居然是${matchedModel.name}！你敢来比吗 → 转发给最聪明的那个朋友`
             : `I matched ${matchedModel.name}! Think you can beat me?` }}
@@ -93,31 +89,29 @@
         <div class="flex gap-2.5">
           <button @click="generateShareCard"
                   class="flex-1 px-4 py-3.5 lg:py-4 rounded-xl text-xs lg:text-sm font-semibold
-                         bg-gradient-to-r from-neon-cyan/[0.06] to-neon-purple/[0.06]
-                         border border-neon-cyan/20 hover:border-neon-cyan/40
+                         bg-pop-blue/5 border-2 border-pop-blue/20 hover:border-pop-blue/40
                          transition-all duration-300 cursor-pointer active:scale-[0.97]
-                         text-white/60 hover:text-white/80">
+                         text-pop-blue">
             🖼️ {{ t('result.shareCard') }}
           </button>
           <button @click="shareResult"
                   class="flex-1 px-4 py-3.5 lg:py-4 rounded-xl text-xs lg:text-sm font-semibold
-                         bg-white/[0.03] border border-white/[0.06]
-                         hover:border-white/15
+                         bg-sand border-2 border-border hover:border-ink-muted
                          transition-all duration-300 cursor-pointer active:scale-[0.97]
-                         text-white/50 hover:text-white/70">
+                         text-ink-secondary">
             📋 {{ t('result.share') }}
           </button>
         </div>
         <Transition name="toast">
-          <p v-if="showCopied" class="text-center text-[11px] text-neon-green/70 mt-3">
+          <p v-if="showCopied" class="text-center text-[11px] text-pop-green mt-3">
             ✓ {{ copiedMsg }}
           </p>
         </Transition>
       </div>
 
       <!-- ===== RADAR CHART ===== -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-3">
-        <h3 class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-white/25 mb-5 text-center">
+      <div class="quiz-card rounded-xl p-6 lg:p-8 mb-4 animate-float-in-3">
+        <h3 class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-ink-muted mb-5 text-center">
           {{ t('result.breakdown') }}
         </h3>
         <RadarChart
@@ -130,27 +124,27 @@
         <div class="flex flex-wrap justify-center gap-1.5 mt-5">
           <span v-for="cat in radarCategories" :key="cat"
                 class="px-2 py-0.5 rounded-md text-[11px] font-semibold tabular-nums"
-                :style="{ background: catColors[cat] + '10', color: catColors[cat] + 'bb' }">
+                :style="{ background: catColors[cat] + '0c', color: catColors[cat] }">
             {{ t('cat.' + cat) }} {{ Math.round((normalizedCatScores[cat] || 0) * 100) }}%
           </span>
         </div>
       </div>
 
       <!-- ===== THINKING STYLE ===== -->
-      <div class="glass-card rounded-2xl p-6 lg:p-8 mb-4 animate-float-in-4">
-        <h3 class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-white/25 mb-5 text-center">
+      <div class="quiz-card rounded-xl p-6 lg:p-8 mb-4 animate-float-in-4">
+        <h3 class="text-[10px] lg:text-xs uppercase tracking-[0.15em] text-ink-muted mb-5 text-center">
           {{ t('result.style') }}
         </h3>
 
         <!-- Primary style -->
         <div class="flex items-center gap-4 mb-6 p-4 rounded-xl"
-             :style="{ background: thinkingStyle.color + '06', border: '1px solid ' + thinkingStyle.color + '15' }">
+             :style="{ background: thinkingStyle.color + '08', border: '2px solid ' + thinkingStyle.color + '18' }">
           <span class="text-3xl lg:text-4xl shrink-0">{{ thinkingStyle.icon }}</span>
           <div>
-            <div class="font-bold text-sm lg:text-base" :style="{ color: thinkingStyle.color }">
+            <div class="heading-text text-sm lg:text-base" :style="{ color: thinkingStyle.color }">
               {{ thinkingStyle.name[locale] }}
             </div>
-            <div class="text-[11px] lg:text-xs text-white/30 leading-relaxed mt-1">
+            <div class="text-[11px] lg:text-xs text-ink-secondary leading-relaxed mt-1">
               {{ thinkingStyle.description[locale] }}
             </div>
           </div>
@@ -160,12 +154,12 @@
         <div class="space-y-2.5">
           <div v-for="style in allStyles" :key="style.id" class="flex items-center gap-2.5">
             <span class="text-sm w-5 text-center">{{ style.icon }}</span>
-            <span class="text-[10px] text-white/25 w-14 shrink-0 truncate">{{ style.name[locale] }}</span>
-            <div class="flex-1 h-[6px] rounded-full bg-white/[0.08] overflow-hidden">
+            <span class="text-[10px] text-ink-muted w-14 shrink-0 truncate">{{ style.name[locale] }}</span>
+            <div class="flex-1 h-[6px] rounded-full bg-border overflow-hidden">
               <div class="h-full rounded-full transition-all duration-1000"
-                   :style="{ width: style.pct + '%', background: style.color + '90' }" />
+                   :style="{ width: style.pct + '%', background: style.color }" />
             </div>
-            <span class="text-[10px] text-white/20 w-7 text-right tabular-nums">{{ style.pct }}%</span>
+            <span class="text-[10px] text-ink-muted w-7 text-right tabular-nums">{{ style.pct }}%</span>
           </div>
         </div>
       </div>
@@ -174,32 +168,32 @@
       <div class="space-y-2.5 mb-8 animate-float-in-5">
         <button @click="$emit('retry')"
                 class="w-full px-5 py-4 lg:py-5 rounded-xl text-sm lg:text-base text-center
-                       glass-card hover:border-neon-cyan/20
+                       quiz-card hover:border-pop-blue/30
                        transition-all duration-300 cursor-pointer active:scale-[0.98]">
-          <span class="text-white/70 font-semibold">🎲 {{ t('result.retry') }}</span>
-          <span class="block text-[10px] text-white/20 mt-1">{{ t('result.retryHint') }}</span>
+          <span class="text-ink font-semibold">🎲 {{ t('result.retry') }}</span>
+          <span class="block text-[10px] text-ink-muted mt-1">{{ t('result.retryHint') }}</span>
         </button>
         <button @click="$emit('retryDifferent')"
                 class="w-full px-5 py-3.5 lg:py-4 rounded-xl text-sm lg:text-base text-center
-                       glass-card hover:border-neon-orange/20
+                       quiz-card hover:border-pop-orange/30
                        transition-all duration-300 cursor-pointer active:scale-[0.98]">
-          <span class="text-neon-orange/60 font-semibold">😤 {{ t('result.retryExcuse') }}</span>
+          <span class="text-pop-orange font-semibold">😤 {{ t('result.retryExcuse') }}</span>
         </button>
       </div>
 
       <!-- Fun fact -->
       <div class="text-center mb-12 px-4">
-        <p class="text-[11px] text-white/15 italic leading-relaxed">
+        <p class="text-[11px] text-ink-muted italic leading-relaxed">
           💡 {{ t('result.funFact') }}: {{ matchedModel.funFact[locale] }}
         </p>
       </div>
 
       <!-- Footer -->
-      <div class="text-center text-[11px] text-white/15 pb-8 tracking-wider">
+      <div class="text-center text-[11px] text-ink-muted pb-8 tracking-wider">
         {{ t('footer.day') }}
-        <span class="mx-1.5 text-white/8">/</span>
+        <span class="mx-1.5 text-border">/</span>
         <a href="https://github.com/openvibelab" target="_blank"
-           class="text-neon-cyan/45 hover:text-neon-cyan/70 transition-colors duration-300">
+           class="text-pop-blue/60 hover:text-pop-blue transition-colors duration-300">
           OpenVibeLab
         </a>
       </div>
@@ -208,11 +202,11 @@
     <!-- Hidden share card template (for html2canvas) -->
     <div ref="shareCardRef" class="share-card" v-show="renderingCard"
          style="position: fixed; left: -9999px; top: 0; width: 540px; height: 540px;">
-      <div style="width: 540px; height: 540px; background: linear-gradient(135deg, #05051a 0%, #0c0c2e 50%, #14082e 100%);
+      <div style="width: 540px; height: 540px; background: linear-gradient(135deg, #fefaf5 0%, #f5ede0 100%);
                   display: flex; flex-direction: column; align-items: center; justify-content: center;
-                  font-family: Inter, system-ui, sans-serif; color: white; padding: 40px; box-sizing: border-box;">
+                  font-family: 'Space Grotesk', system-ui, sans-serif; color: #2a2118; padding: 40px; box-sizing: border-box;">
         <div style="font-size: 64px; margin-bottom: 12px;">{{ matchedModel.emoji }}</div>
-        <div style="font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">
+        <div style="font-size: 14px; color: #8a7e6f; margin-bottom: 8px;">
           {{ matchedModel.reaction[locale] }}
         </div>
         <div :style="{ fontSize: '36px', fontWeight: 900, color: matchedModel.color, marginBottom: '16px' }">
@@ -220,15 +214,15 @@
         </div>
         <div style="font-size: 56px; font-weight: 900; margin-bottom: 4px;">
           <span :style="{ color: matchedModel.color }">{{ totalScore }}</span>
-          <span style="font-size: 20px; color: rgba(255,255,255,0.2);">/100</span>
+          <span style="font-size: 20px; color: #b5a998;">/100</span>
         </div>
-        <div style="font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 8px;">
+        <div style="font-size: 12px; color: #8a7e6f; margin-top: 8px;">
           {{ thinkingStyle.icon }} {{ thinkingStyle.name[locale] }}
           · {{ correctCount }}/{{ answers.length }} {{ locale === 'zh' ? '答对' : 'correct' }}
         </div>
         <div style="margin-top: auto; display: flex; align-items: center; gap: 8px;">
           <span style="font-size: 20px;">🧠</span>
-          <span style="font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: 1px;">
+          <span style="font-size: 13px; color: #8a7e6f; letter-spacing: 1px;">
             brain.openvibelab.com
           </span>
         </div>
@@ -259,8 +253,8 @@ const shareCardRef = ref(null)
 const renderingCard = ref(false)
 
 const catColors = {
-  science: '#00f0ff', history: '#a855f7', logic: '#39ff14',
-  coding: '#ffe01b', language: '#ff2d7b', general: '#3b82f6', creativity: '#f59e0b'
+  science: '#3a7bd5', history: '#7c5cbf', logic: '#4aaf51',
+  coding: '#e08a3a', language: '#e8413c', general: '#3a7bd5', creativity: '#f5c542'
 }
 
 const totalScore = computed(() => {
@@ -333,13 +327,13 @@ function shareResult() {
 
 async function generateShareCard() {
   renderingCard.value = true
-  await new Promise(r => setTimeout(r, 100)) // let DOM render
+  await new Promise(r => setTimeout(r, 100))
 
   try {
     const html2canvas = (await import('html2canvas')).default
     const canvas = await html2canvas(shareCardRef.value, {
       scale: 2,
-      backgroundColor: '#05051a',
+      backgroundColor: '#fefaf5',
       logging: false,
       useCORS: true
     })
@@ -347,7 +341,6 @@ async function generateShareCard() {
     canvas.toBlob(async (blob) => {
       if (!blob) return
 
-      // Try native share first (mobile)
       if (navigator.share && navigator.canShare) {
         const file = new File([blob], 'ai-brain-match.png', { type: 'image/png' })
         try {
@@ -356,7 +349,6 @@ async function generateShareCard() {
         } catch {}
       }
 
-      // Fallback: download
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -366,7 +358,6 @@ async function generateShareCard() {
       showToast(locale.value === 'zh' ? '图片已保存，去小红书发吧！' : 'Image saved! Share it!')
     }, 'image/png')
   } catch {
-    // Fallback to text share
     shareResult()
   } finally {
     renderingCard.value = false
@@ -374,7 +365,6 @@ async function generateShareCard() {
 }
 
 onMounted(() => {
-  // Animated counter
   const target = totalScore.value
   const duration = 1400
   const start = performance.now()
@@ -386,12 +376,11 @@ onMounted(() => {
   }
   requestAnimationFrame(tick)
 
-  // Confetti
   import('canvas-confetti').then(({ default: confetti }) => {
     confetti({
       particleCount: 60, spread: 55, startVelocity: 30,
       origin: { y: 0.35 },
-      colors: [matchedModel.value.color, '#00f0ff', '#a855f7'],
+      colors: [matchedModel.value.color, '#3a7bd5', '#7c5cbf', '#f5c542'],
       gravity: 1.2
     })
   }).catch(() => {})
@@ -400,6 +389,6 @@ onMounted(() => {
 
 <style scoped>
 .toast-enter-active { animation: fade-up 0.3s ease-out; }
-.toast-leave-active { transition: all 0.2s ease-in; opacity: 0; }
+.toast-leave-active { transition: all 0.2s ease-out; opacity: 0; }
 @keyframes fade-up { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 </style>

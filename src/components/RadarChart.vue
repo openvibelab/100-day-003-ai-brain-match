@@ -2,16 +2,9 @@
   <svg :viewBox="`0 0 ${size} ${size}`" class="w-full max-w-[240px] lg:max-w-[320px] mx-auto select-none">
     <defs>
       <radialGradient :id="'radar-fill-' + accentColor.replace('#','')">
-        <stop offset="0%" :stop-color="accentColor" stop-opacity="0.2" />
-        <stop offset="100%" :stop-color="accentColor" stop-opacity="0.03" />
+        <stop offset="0%" :stop-color="accentColor" stop-opacity="0.15" />
+        <stop offset="100%" :stop-color="accentColor" stop-opacity="0.02" />
       </radialGradient>
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="2" result="blur" />
-        <feMerge>
-          <feMergeNode in="blur" />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
     </defs>
 
     <!-- Background rings -->
@@ -19,7 +12,7 @@
       v-for="ring in 4" :key="'ring-'+ring"
       :points="getPolygonPoints(ring / 4)"
       fill="none"
-      :stroke="`rgba(255,255,255,${ring * 0.05})`"
+      :stroke="`rgba(42,33,24,${ring * 0.06})`"
       stroke-width="0.5"
     />
 
@@ -28,28 +21,28 @@
       v-for="(_, i) in categories" :key="'axis-'+i"
       :x1="center" :y1="center"
       :x2="getPoint(i, 1).x" :y2="getPoint(i, 1).y"
-      stroke="rgba(255,255,255,0.04)" stroke-width="0.5"
+      stroke="rgba(42,33,24,0.06)" stroke-width="0.5"
     />
 
     <!-- Data polygon -->
     <polygon :points="dataPoints" :fill="`url(#radar-fill-${accentColor.replace('#','')})`" />
     <polygon :points="dataPoints" fill="none" :stroke="accentColor" stroke-width="1.5"
-             stroke-linejoin="round" filter="url(#glow)" opacity="0.8" />
+             stroke-linejoin="round" opacity="0.8" />
 
     <!-- Data dots -->
     <template v-for="(cat, i) in categories" :key="'dots-'+i">
       <circle :cx="getPoint(i, scores[cat] || 0).x" :cy="getPoint(i, scores[cat] || 0).y"
-              r="5" :fill="accentColor" opacity="0.1" />
+              r="4" :fill="accentColor" opacity="0.15" />
       <circle :cx="getPoint(i, scores[cat] || 0).x" :cy="getPoint(i, scores[cat] || 0).y"
-              r="2.5" :fill="accentColor" opacity="0.8" />
+              r="2.5" :fill="accentColor" opacity="0.9" />
     </template>
 
-    <!-- Labels — positioned further out for mobile -->
+    <!-- Labels -->
     <text
       v-for="(cat, i) in categories" :key="'label-'+i"
       :x="getLabelPos(i).x" :y="getLabelPos(i).y"
       text-anchor="middle" dominant-baseline="middle"
-      fill="rgba(255,255,255,0.55)" style="font-size: 11px; font-weight: 600;"
+      fill="#8a7e6f" style="font-size: 11px; font-weight: 600;"
     >
       {{ labels[i] }}
     </text>
@@ -63,7 +56,7 @@ const props = defineProps({
   categories: Array,
   scores: Object,
   labels: Array,
-  accentColor: { type: String, default: '#00f0ff' }
+  accentColor: { type: String, default: '#3a7bd5' }
 })
 
 const size = 240
